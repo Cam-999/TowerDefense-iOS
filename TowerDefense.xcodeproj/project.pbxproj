@@ -6,17 +6,94 @@
 	objectVersion = 77;
 	objects = {
 
-/* Begin PBXFileReference section */
-		536F2C3E2F5A8D3B005C7F86 /* TowerDefense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TowerDefense.app; sourceTree = BUILT_PRODUCTS_DIR; };
-/* End PBXFileReference section */
+/* Begin PBXBuildFile section */
+		536F2CAC2F5A8D54005C7F86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 536F2CAD2F5A8D54005C7F86 /* Assets.xcassets */; };
+		536F2C872F5A8D54005C7F86 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C772F5A8D54005C7F86 /* AppState.swift */; };
+		536F2C882F5A8D54005C7F86 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C812F5A8D54005C7F86 /* MainMenuView.swift */; };
+		536F2C892F5A8D54005C7F86 /* GameScene+Waves.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C672F5A8D54005C7F86 /* GameScene+Waves.swift */; };
+		536F2C8A2F5A8D54005C7F86 /* ShopView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C842F5A8D54005C7F86 /* ShopView.swift */; };
+		536F2C8B2F5A8D54005C7F86 /* GameView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C7D2F5A8D54005C7F86 /* GameView.swift */; };
+		536F2C8C2F5A8D54005C7F86 /* TowerPaletteView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C7F2F5A8D54005C7F86 /* TowerPaletteView.swift */; };
+		536F2C8D2F5A8D54005C7F86 /* ShopState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C792F5A8D54005C7F86 /* ShopState.swift */; };
+		536F2C8E2F5A8D54005C7F86 /* HUDView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C7E2F5A8D54005C7F86 /* HUDView.swift */; };
+		536F2C8F2F5A8D54005C7F86 /* EnemyNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C5D2F5A8D54005C7F86 /* EnemyNode.swift */; };
+		536F2CF1 /* TowerUpgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2CF0 /* TowerUpgrade.swift */; };
+		536F2C902F5A8D54005C7F86 /* Enemy.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C702F5A8D54005C7F86 /* Enemy.swift */; };
+		536F2C912F5A8D54005C7F86 /* TargetingSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C6B2F5A8D54005C7F86 /* TargetingSystem.swift */; };
+		536F2C922F5A8D54005C7F86 /* GameScene+Touches.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C662F5A8D54005C7F86 /* GameScene+Touches.swift */; };
+		536F2C932F5A8D54005C7F86 /* TowerNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C602F5A8D54005C7F86 /* TowerNode.swift */; };
+		536F2C942F5A8D54005C7F86 /* WaveSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C6D2F5A8D54005C7F86 /* WaveSystem.swift */; };
+		536F2C952F5A8D54005C7F86 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C582F5A8D54005C7F86 /* ContentView.swift */; };
+		536F2C962F5A8D54005C7F86 /* GameScene+Physics.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C652F5A8D54005C7F86 /* GameScene+Physics.swift */; };
+		536F2C972F5A8D54005C7F86 /* CGPoint+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C592F5A8D54005C7F86 /* CGPoint+Extensions.swift */; };
+		536F2C982F5A8D54005C7F86 /* GridCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C712F5A8D54005C7F86 /* GridCell.swift */; };
+		536F2C992F5A8D54005C7F86 /* ShopItemRow.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C832F5A8D54005C7F86 /* ShopItemRow.swift */; };
+		536F2C9A2F5A8D54005C7F86 /* PhysicsCategories.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C622F5A8D54005C7F86 /* PhysicsCategories.swift */; };
+		536F2C9B2F5A8D54005C7F86 /* TowerPlacementSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C6C2F5A8D54005C7F86 /* TowerPlacementSystem.swift */; };
+		536F2C9C2F5A8D54005C7F86 /* Color+Theme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C5A2F5A8D54005C7F86 /* Color+Theme.swift */; };
+		536F2C9D2F5A8D54005C7F86 /* Upgrade.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C732F5A8D54005C7F86 /* Upgrade.swift */; };
+		536F2C9E2F5A8D54005C7F86 /* WaveData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C752F5A8D54005C7F86 /* WaveData.swift */; };
+		536F2C9F2F5A8D54005C7F86 /* GameState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C782F5A8D54005C7F86 /* GameState.swift */; };
+		536F2CA02F5A8D54005C7F86 /* ProjectileNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C5F2F5A8D54005C7F86 /* ProjectileNode.swift */; };
+		536F2CA12F5A8D54005C7F86 /* GameScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C642F5A8D54005C7F86 /* GameScene.swift */; };
+		536F2CA22F5A8D54005C7F86 /* Tower.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C722F5A8D54005C7F86 /* Tower.swift */; };
+		536F2CA32F5A8D54005C7F86 /* GameOverView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C7C2F5A8D54005C7F86 /* GameOverView.swift */; };
+		536F2CA42F5A8D54005C7F86 /* PathNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C5E2F5A8D54005C7F86 /* PathNode.swift */; };
+		536F2CA52F5A8D54005C7F86 /* Wave.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C742F5A8D54005C7F86 /* Wave.swift */; };
+		536F2CA62F5A8D54005C7F86 /* ProjectileSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C6A2F5A8D54005C7F86 /* ProjectileSystem.swift */; };
+		536F2CA72F5A8D54005C7F86 /* SKNode+Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C5B2F5A8D54005C7F86 /* SKNode+Extensions.swift */; };
+		536F2CA82F5A8D54005C7F86 /* PathSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C692F5A8D54005C7F86 /* PathSystem.swift */; };
+		536F2CA92F5A8D54005C7F86 /* TowerDefenseApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C7B2F5A8D54005C7F86 /* TowerDefenseApp.swift */; };
+		AB4A17D689BA552B3DF0C6D6 /* HapticManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = F107CE9C903398BC4D988ADB /* HapticManager.swift */; };
+		536F2CAB2F5A8D54005C7F86 /* SoundSystem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2CAA2F5A8D54005C7F86 /* SoundSystem.swift */; };
+		A1B2C3D400000001 /* PoisonZoneNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D400000002 /* PoisonZoneNode.swift */; };
+		A1B2C3D400000003 /* MapDefinition.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D400000004 /* MapDefinition.swift */; };
+/* End PBXBuildFile section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		536F2C402F5A8D3B005C7F86 /* TowerDefense */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = TowerDefense;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
+/* Begin PBXFileReference section */
+		536F2CAD2F5A8D54005C7F86 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		536F2C3E2F5A8D3B005C7F86 /* TowerDefense.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TowerDefense.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		536F2C582F5A8D54005C7F86 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		536F2C592F5A8D54005C7F86 /* CGPoint+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGPoint+Extensions.swift"; sourceTree = "<group>"; };
+		536F2C5A2F5A8D54005C7F86 /* Color+Theme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Color+Theme.swift"; sourceTree = "<group>"; };
+		536F2C5B2F5A8D54005C7F86 /* SKNode+Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SKNode+Extensions.swift"; sourceTree = "<group>"; };
+		536F2C5D2F5A8D54005C7F86 /* EnemyNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnemyNode.swift; sourceTree = "<group>"; };
+		536F2C5E2F5A8D54005C7F86 /* PathNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathNode.swift; sourceTree = "<group>"; };
+		536F2C5F2F5A8D54005C7F86 /* ProjectileNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectileNode.swift; sourceTree = "<group>"; };
+		536F2C602F5A8D54005C7F86 /* TowerNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerNode.swift; sourceTree = "<group>"; };
+		536F2C622F5A8D54005C7F86 /* PhysicsCategories.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhysicsCategories.swift; sourceTree = "<group>"; };
+		536F2C642F5A8D54005C7F86 /* GameScene.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameScene.swift; sourceTree = "<group>"; };
+		536F2C652F5A8D54005C7F86 /* GameScene+Physics.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameScene+Physics.swift"; sourceTree = "<group>"; };
+		536F2C662F5A8D54005C7F86 /* GameScene+Touches.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameScene+Touches.swift"; sourceTree = "<group>"; };
+		536F2C672F5A8D54005C7F86 /* GameScene+Waves.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GameScene+Waves.swift"; sourceTree = "<group>"; };
+		536F2C692F5A8D54005C7F86 /* PathSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PathSystem.swift; sourceTree = "<group>"; };
+		536F2C6A2F5A8D54005C7F86 /* ProjectileSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProjectileSystem.swift; sourceTree = "<group>"; };
+		536F2C6B2F5A8D54005C7F86 /* TargetingSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TargetingSystem.swift; sourceTree = "<group>"; };
+		536F2C6C2F5A8D54005C7F86 /* TowerPlacementSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerPlacementSystem.swift; sourceTree = "<group>"; };
+		536F2C6D2F5A8D54005C7F86 /* WaveSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveSystem.swift; sourceTree = "<group>"; };
+		536F2CF0 /* TowerUpgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerUpgrade.swift; sourceTree = "<group>"; };
+		536F2C702F5A8D54005C7F86 /* Enemy.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Enemy.swift; sourceTree = "<group>"; };
+		536F2C712F5A8D54005C7F86 /* GridCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GridCell.swift; sourceTree = "<group>"; };
+		536F2C722F5A8D54005C7F86 /* Tower.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Tower.swift; sourceTree = "<group>"; };
+		536F2C732F5A8D54005C7F86 /* Upgrade.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Upgrade.swift; sourceTree = "<group>"; };
+		536F2C742F5A8D54005C7F86 /* Wave.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Wave.swift; sourceTree = "<group>"; };
+		536F2C752F5A8D54005C7F86 /* WaveData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaveData.swift; sourceTree = "<group>"; };
+		536F2C772F5A8D54005C7F86 /* AppState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppState.swift; sourceTree = "<group>"; };
+		536F2C782F5A8D54005C7F86 /* GameState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameState.swift; sourceTree = "<group>"; };
+		536F2C792F5A8D54005C7F86 /* ShopState.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopState.swift; sourceTree = "<group>"; };
+		536F2C7B2F5A8D54005C7F86 /* TowerDefenseApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerDefenseApp.swift; sourceTree = "<group>"; };
+		536F2C7C2F5A8D54005C7F86 /* GameOverView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameOverView.swift; sourceTree = "<group>"; };
+		536F2C7D2F5A8D54005C7F86 /* GameView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = GameView.swift; sourceTree = "<group>"; };
+		536F2C7E2F5A8D54005C7F86 /* HUDView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HUDView.swift; sourceTree = "<group>"; };
+		536F2C7F2F5A8D54005C7F86 /* TowerPaletteView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TowerPaletteView.swift; sourceTree = "<group>"; };
+		536F2C812F5A8D54005C7F86 /* MainMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuView.swift; sourceTree = "<group>"; };
+		536F2C832F5A8D54005C7F86 /* ShopItemRow.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopItemRow.swift; sourceTree = "<group>"; };
+		536F2C842F5A8D54005C7F86 /* ShopView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ShopView.swift; sourceTree = "<group>"; };
+		F107CE9C903398BC4D988ADB /* HapticManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HapticManager.swift; sourceTree = "<group>"; };
+		536F2CAA2F5A8D54005C7F86 /* SoundSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSystem.swift; sourceTree = "<group>"; };
+		A1B2C3D400000002 /* PoisonZoneNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoisonZoneNode.swift; sourceTree = "<group>"; };
+		A1B2C3D400000004 /* MapDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDefinition.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		536F2C3B2F5A8D3B005C7F86 /* Frameworks */ = {
@@ -32,7 +109,14 @@
 		536F2C352F5A8D3B005C7F86 = {
 			isa = PBXGroup;
 			children = (
-				536F2C402F5A8D3B005C7F86 /* TowerDefense */,
+				536F2CAD2F5A8D54005C7F86 /* Assets.xcassets */,
+				536F2C582F5A8D54005C7F86 /* ContentView.swift */,
+				536F2C5C2F5A8D54005C7F86 /* Extensions */,
+				536F2C6F2F5A8D54005C7F86 /* Game */,
+				536F2C762F5A8D54005C7F86 /* Models */,
+				536F2C7A2F5A8D54005C7F86 /* State */,
+				536F2C7B2F5A8D54005C7F86 /* TowerDefenseApp.swift */,
+				536F2C862F5A8D54005C7F86 /* Views */,
 				536F2C3F2F5A8D3B005C7F86 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -43,6 +127,135 @@
 				536F2C3E2F5A8D3B005C7F86 /* TowerDefense.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		536F2C5C2F5A8D54005C7F86 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C592F5A8D54005C7F86 /* CGPoint+Extensions.swift */,
+				536F2C5A2F5A8D54005C7F86 /* Color+Theme.swift */,
+				536F2C5B2F5A8D54005C7F86 /* SKNode+Extensions.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		536F2C612F5A8D54005C7F86 /* Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C5D2F5A8D54005C7F86 /* EnemyNode.swift */,
+				536F2C5E2F5A8D54005C7F86 /* PathNode.swift */,
+				A1B2C3D400000002 /* PoisonZoneNode.swift */,
+				536F2C5F2F5A8D54005C7F86 /* ProjectileNode.swift */,
+				536F2C602F5A8D54005C7F86 /* TowerNode.swift */,
+			);
+			path = Nodes;
+			sourceTree = "<group>";
+		};
+		536F2C632F5A8D54005C7F86 /* Physics */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C622F5A8D54005C7F86 /* PhysicsCategories.swift */,
+			);
+			path = Physics;
+			sourceTree = "<group>";
+		};
+		536F2C682F5A8D54005C7F86 /* Scene */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C642F5A8D54005C7F86 /* GameScene.swift */,
+				536F2C652F5A8D54005C7F86 /* GameScene+Physics.swift */,
+				536F2C662F5A8D54005C7F86 /* GameScene+Touches.swift */,
+				536F2C672F5A8D54005C7F86 /* GameScene+Waves.swift */,
+			);
+			path = Scene;
+			sourceTree = "<group>";
+		};
+		536F2C6E2F5A8D54005C7F86 /* Systems */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C692F5A8D54005C7F86 /* PathSystem.swift */,
+				536F2C6A2F5A8D54005C7F86 /* ProjectileSystem.swift */,
+				536F2C6B2F5A8D54005C7F86 /* TargetingSystem.swift */,
+				536F2C6C2F5A8D54005C7F86 /* TowerPlacementSystem.swift */,
+				536F2C6D2F5A8D54005C7F86 /* WaveSystem.swift */,
+			);
+			path = Systems;
+			sourceTree = "<group>";
+		};
+		536F2C6F2F5A8D54005C7F86 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C612F5A8D54005C7F86 /* Nodes */,
+				536F2C632F5A8D54005C7F86 /* Physics */,
+				536F2C682F5A8D54005C7F86 /* Scene */,
+				536F2C6E2F5A8D54005C7F86 /* Systems */,
+				F107CE9C903398BC4D988ADB /* HapticManager.swift */,
+				536F2CAA2F5A8D54005C7F86 /* SoundSystem.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		536F2C762F5A8D54005C7F86 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+		536F2C702F5A8D54005C7F86 /* Enemy.swift */,
+				536F2CF0 /* TowerUpgrade.swift */,
+				536F2C712F5A8D54005C7F86 /* GridCell.swift */,
+				536F2C722F5A8D54005C7F86 /* Tower.swift */,
+				536F2C732F5A8D54005C7F86 /* Upgrade.swift */,
+				536F2C742F5A8D54005C7F86 /* Wave.swift */,
+				536F2C752F5A8D54005C7F86 /* WaveData.swift */,
+				A1B2C3D400000004 /* MapDefinition.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		536F2C7A2F5A8D54005C7F86 /* State */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C772F5A8D54005C7F86 /* AppState.swift */,
+				536F2C782F5A8D54005C7F86 /* GameState.swift */,
+				536F2C792F5A8D54005C7F86 /* ShopState.swift */,
+			);
+			path = State;
+			sourceTree = "<group>";
+		};
+		536F2C802F5A8D54005C7F86 /* Game */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C7C2F5A8D54005C7F86 /* GameOverView.swift */,
+				536F2C7D2F5A8D54005C7F86 /* GameView.swift */,
+				536F2C7E2F5A8D54005C7F86 /* HUDView.swift */,
+				536F2C7F2F5A8D54005C7F86 /* TowerPaletteView.swift */,
+			);
+			path = Game;
+			sourceTree = "<group>";
+		};
+		536F2C822F5A8D54005C7F86 /* Menu */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C812F5A8D54005C7F86 /* MainMenuView.swift */,
+			);
+			path = Menu;
+			sourceTree = "<group>";
+		};
+		536F2C852F5A8D54005C7F86 /* Shop */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C832F5A8D54005C7F86 /* ShopItemRow.swift */,
+				536F2C842F5A8D54005C7F86 /* ShopView.swift */,
+			);
+			path = Shop;
+			sourceTree = "<group>";
+		};
+		536F2C862F5A8D54005C7F86 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				536F2C802F5A8D54005C7F86 /* Game */,
+				536F2C822F5A8D54005C7F86 /* Menu */,
+				536F2C852F5A8D54005C7F86 /* Shop */,
+			);
+			path = Views;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -59,9 +272,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				536F2C402F5A8D3B005C7F86 /* TowerDefense */,
 			);
 			name = TowerDefense;
 			packageProductDependencies = (
@@ -109,6 +319,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				536F2CAC2F5A8D54005C7F86 /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -119,6 +330,46 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				536F2C872F5A8D54005C7F86 /* AppState.swift in Sources */,
+				536F2C882F5A8D54005C7F86 /* MainMenuView.swift in Sources */,
+				536F2C892F5A8D54005C7F86 /* GameScene+Waves.swift in Sources */,
+				536F2C8A2F5A8D54005C7F86 /* ShopView.swift in Sources */,
+				536F2C8B2F5A8D54005C7F86 /* GameView.swift in Sources */,
+				536F2C8C2F5A8D54005C7F86 /* TowerPaletteView.swift in Sources */,
+				536F2C8D2F5A8D54005C7F86 /* ShopState.swift in Sources */,
+				536F2C8E2F5A8D54005C7F86 /* HUDView.swift in Sources */,
+				536F2C8F2F5A8D54005C7F86 /* EnemyNode.swift in Sources */,
+		536F2C902F5A8D54005C7F86 /* Enemy.swift in Sources */,
+				536F2CF1 /* TowerUpgrade.swift in Sources */,
+				536F2C912F5A8D54005C7F86 /* TargetingSystem.swift in Sources */,
+				536F2C922F5A8D54005C7F86 /* GameScene+Touches.swift in Sources */,
+				536F2C932F5A8D54005C7F86 /* TowerNode.swift in Sources */,
+				536F2C942F5A8D54005C7F86 /* WaveSystem.swift in Sources */,
+				536F2C952F5A8D54005C7F86 /* ContentView.swift in Sources */,
+				536F2C962F5A8D54005C7F86 /* GameScene+Physics.swift in Sources */,
+				536F2C972F5A8D54005C7F86 /* CGPoint+Extensions.swift in Sources */,
+				536F2C982F5A8D54005C7F86 /* GridCell.swift in Sources */,
+				536F2C992F5A8D54005C7F86 /* ShopItemRow.swift in Sources */,
+				536F2C9A2F5A8D54005C7F86 /* PhysicsCategories.swift in Sources */,
+				536F2C9B2F5A8D54005C7F86 /* TowerPlacementSystem.swift in Sources */,
+				536F2C9C2F5A8D54005C7F86 /* Color+Theme.swift in Sources */,
+				536F2C9D2F5A8D54005C7F86 /* Upgrade.swift in Sources */,
+				536F2C9E2F5A8D54005C7F86 /* WaveData.swift in Sources */,
+				536F2C9F2F5A8D54005C7F86 /* GameState.swift in Sources */,
+				536F2CA02F5A8D54005C7F86 /* ProjectileNode.swift in Sources */,
+				536F2CA12F5A8D54005C7F86 /* GameScene.swift in Sources */,
+				536F2CA22F5A8D54005C7F86 /* Tower.swift in Sources */,
+				536F2CA32F5A8D54005C7F86 /* GameOverView.swift in Sources */,
+				536F2CA42F5A8D54005C7F86 /* PathNode.swift in Sources */,
+				536F2CA52F5A8D54005C7F86 /* Wave.swift in Sources */,
+				536F2CA62F5A8D54005C7F86 /* ProjectileSystem.swift in Sources */,
+				536F2CA72F5A8D54005C7F86 /* SKNode+Extensions.swift in Sources */,
+				536F2CA82F5A8D54005C7F86 /* PathSystem.swift in Sources */,
+				536F2CA92F5A8D54005C7F86 /* TowerDefenseApp.swift in Sources */,
+				AB4A17D689BA552B3DF0C6D6 /* HapticManager.swift in Sources */,
+				536F2CAB2F5A8D54005C7F86 /* SoundSystem.swift in Sources */,
+				A1B2C3D400000001 /* PoisonZoneNode.swift in Sources */,
+				A1B2C3D400000003 /* MapDefinition.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -257,7 +508,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -289,7 +540,7 @@
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				INFOPLIST_KEY_UIMainStoryboardFile = Main;
+				
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
