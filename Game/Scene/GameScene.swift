@@ -444,7 +444,8 @@ final class GameScene: SKScene {
             for tower in placedTowers where tower !== support && !tower.towerType.isSupport {
                 if support.position.distance(to: tower.position) <= support.effectiveRange {
                     tower.supportDamageMult *= (support.towerType.auraDamageMult + support.upgradeAuraBonus)
-                    tower.supportFireRateMult *= (support.towerType.auraFireRateMult - support.upgradeAuraBonus)
+                    let fireRateBonus = support.towerType == .bellTower ? support.upgradeAuraBonus : 0
+                    tower.supportFireRateMult *= (support.towerType.auraFireRateMult - fireRateBonus)
                 }
             }
         }

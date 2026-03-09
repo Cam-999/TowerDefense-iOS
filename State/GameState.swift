@@ -131,6 +131,19 @@ final class GameState: ObservableObject {
         gold += Int(Double(gold) * interestRate)
     }
 
+    // MARK: - Wave High Score Persistence
+
+    static func waveHighScore(for map: MapType) -> Int {
+        UserDefaults.standard.integer(forKey: "waveHighScore_\(map.rawValue)")
+    }
+
+    static func saveWaveHighScore(_ wave: Int, for map: MapType) {
+        let current = waveHighScore(for: map)
+        if wave > current {
+            UserDefaults.standard.set(wave, forKey: "waveHighScore_\(map.rawValue)")
+        }
+    }
+
     func resetShields() {
         shieldsRemaining = shieldMax
     }

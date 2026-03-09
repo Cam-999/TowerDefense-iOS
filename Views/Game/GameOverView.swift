@@ -57,6 +57,9 @@ struct GameOverView: View {
                 Spacer().frame(height: 40)
             }
         }
+        .onAppear {
+            GameState.saveWaveHighScore(gameState.wave, for: gameState.selectedMap)
+        }
     }
 
     private func statRow(label: String, value: String) -> some View {

@@ -12,9 +12,10 @@ struct MainMenuView: View {
                 Spacer()
 
                 VStack(spacing: 8) {
-                    Image(systemName: "building.columns.fill")
-                        .font(.system(size: 40))
-                        .foregroundColor(.tdAccentAmber)
+                    Image("CrossedSwords")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 80, height: 80)
 
                     Text("KINGDOM")
                         .font(.system(size: 52, weight: .black, design: .serif))
@@ -52,6 +53,11 @@ struct MainMenuView: View {
                                     Text(map.description)
                                         .font(.caption2)
                                         .foregroundColor(.tdTextSecondary)
+                                    if GameState.waveHighScore(for: map) > 0 {
+                                        Text("Best: Wave \(GameState.waveHighScore(for: map))")
+                                            .font(.caption2.bold())
+                                            .foregroundColor(.tdAccentAmber)
+                                    }
                                 }
 
                                 Spacer()
@@ -77,6 +83,22 @@ struct MainMenuView: View {
                 .padding(.horizontal, 30)
 
                 Spacer()
+
+                // Decorative sword spacer
+                HStack(spacing: 8) {
+                    Rectangle().frame(height: 1).foregroundColor(.tdTextSecondary.opacity(0.4))
+                    Image(systemName: "chevron.left")
+                        .font(.caption2)
+                        .foregroundColor(.tdTextSecondary)
+                    Image(systemName: "shield.fill")
+                        .font(.caption)
+                        .foregroundColor(.tdAccentAmber)
+                    Image(systemName: "chevron.right")
+                        .font(.caption2)
+                        .foregroundColor(.tdTextSecondary)
+                    Rectangle().frame(height: 1).foregroundColor(.tdTextSecondary.opacity(0.4))
+                }
+                .padding(.horizontal, 40)
 
                 Button {
                     let map = gameState.selectedMap

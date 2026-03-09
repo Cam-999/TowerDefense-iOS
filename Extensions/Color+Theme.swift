@@ -6,10 +6,11 @@ extension Color {
     static let tdSurface       = Color(hex: 0x1A1208)  // Very dark wood
     static let tdElevated      = Color(hex: 0x3D2B14)  // Medium dark wood
     static let tdPath          = Color(hex: 0x8B7355)  // Cobblestone
-    static let tdAccentBlue    = Color(hex: 0x8B6914)  // Gold leaf (primary)
+    static let tdAccentBlue    = Color(hex: 0x7B1D1D)  // Dark red (buttons)
     static let tdAccentTeal    = Color(hex: 0x4A90A4)  // Holy water blue
     static let tdAccentPurple  = Color(hex: 0x6B2FA0)  // Wizard purple
-    static let tdAccentAmber   = Color(hex: 0xD4A017)  // Gold coin
+    static let tdAccentAmber   = Color(hex: 0x8B1A1A)  // Dark red
+    static let tdGold          = Color(hex: 0xFFD700)  // Gold coin
     static let tdDanger        = Color(hex: 0x8B0000)  // Blood red
     static let tdTextPrimary   = Color(hex: 0xF5E6C8)  // Parchment
     static let tdTextSecondary = Color(hex: 0x9B8B6B)  // Aged text
@@ -35,10 +36,11 @@ extension SKColor {
     static let tdStone         = SKColor(hex: 0x7A7A7A)
     static let tdStoneDark     = SKColor(hex: 0x4A4A4A)
     static let tdIron          = SKColor(hex: 0x5A5A5A)
-    static let tdAccentBlue    = SKColor(hex: 0x8B6914)
+    static let tdAccentBlue    = SKColor(hex: 0x7B1D1D)
     static let tdAccentTeal    = SKColor(hex: 0x4A90A4)
     static let tdAccentPurple  = SKColor(hex: 0x6B2FA0)
-    static let tdAccentAmber   = SKColor(hex: 0xD4A017)
+    static let tdAccentAmber   = SKColor(hex: 0x8B1A1A)
+    static let tdGold          = SKColor(hex: 0xFFD700)
     static let tdDanger        = SKColor(hex: 0x8B0000)
     static let tdTextPrimary   = SKColor(hex: 0xF5E6C8)
     static let tdTextSecondary = SKColor(hex: 0x9B8B6B)

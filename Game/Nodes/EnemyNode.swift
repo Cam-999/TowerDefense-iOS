@@ -521,13 +521,8 @@ final class EnemyNode: SKNode {
                 ])
             ]))
 
-        case .barracks:
-            // Red slash flash
-            bodyNode.run(.sequence([
-                .colorize(with: SKColor(red: 1.0, green: 0.2, blue: 0.2, alpha: 1),
-                          colorBlendFactor: 0.65, duration: 0.03),
-                .colorize(withColorBlendFactor: 0, duration: 0.12)
-            ]))
+        case .blacksmith:
+            break  // support tower, doesn't attack
 
         case .alchemist:
             // Green poison flash + brief expand

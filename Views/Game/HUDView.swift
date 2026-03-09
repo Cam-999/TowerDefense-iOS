@@ -16,7 +16,7 @@ struct HUDView: View {
             Spacer()
 
             // Gold
-            hudPill(icon: "circle.fill", value: "\(gameState.gold)", color: .tdAccentAmber)
+            hudPill(icon: "circle.fill", value: "\(gameState.gold)", color: .tdGold)
 
             // Gems
             hudPill(icon: "diamond.fill", value: "\(gameState.gems)", color: .cyan)

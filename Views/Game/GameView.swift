@@ -117,11 +117,13 @@ private struct TowerInfoBar: View {
                 Text(tower.towerType.displayName)
                     .font(.system(size: 11, weight: .bold))
                     .foregroundColor(.tdTextPrimary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
                 Text("Lv \(tower.upgradeLevel + 1)/\(tower.maxUpgradeLevel + 1)")
                     .font(.system(size: 9))
                     .foregroundColor(.tdTextSecondary)
             }
-            .frame(width: 60, alignment: .leading)
+            .frame(width: 70, alignment: .leading)
 
             // Upgrade button (replaces itself per tier)
             if let upgrade = tower.nextUpgrade {
@@ -139,7 +141,7 @@ private struct TowerInfoBar: View {
                         }
                         Text("\(upgrade.cost)g")
                             .font(.system(size: 11, weight: .bold))
-                            .foregroundColor(.tdAccentAmber)
+                            .foregroundColor(.tdGold)
                     }
                     .foregroundColor(.white)
                     .padding(.horizontal, 10)

@@ -132,7 +132,7 @@ final class TowerNode: SKNode {
             extraSlowFactor += upgrade.specialBonus
         case .catapult, .alchemist:
             upgradeSplashMult *= upgrade.specialBonus
-        case .bellTower:
+        case .bellTower, .blacksmith:
             upgradeAuraBonus += upgrade.specialBonus
         default:
             break
@@ -273,35 +273,45 @@ final class TowerNode: SKNode {
             container.addChild(sprite)
             return container
 
-        case .barracks:
-            // Square base (green) + door + flag pole with pennant
-            let base = SKShapeNode(rectOf: CGSize(width: 28, height: 28), cornerRadius: 4)
+        case .blacksmith:
+            // Diamond/rhombus base (saddle brown) + anvil + forge sparks
+            let r: CGFloat = 16
+            let diamondPath = CGMutablePath()
+            diamondPath.move(to: CGPoint(x: 0, y: r))
+            diamondPath.addLine(to: CGPoint(x: r, y: 0))
+            diamondPath.addLine(to: CGPoint(x: 0, y: -r))
+            diamondPath.addLine(to: CGPoint(x: -r, y: 0))
+            diamondPath.closeSubpath()
+            let base = SKShapeNode(path: diamondPath)
             base.fillColor   = type.color
-            base.strokeColor = SKColor(white: 0.8, alpha: 0.8)
-            base.lineWidth   = 1.5
-            // Door
-            let door = SKShapeNode(rectOf: CGSize(width: 8, height: 10), cornerRadius: 2)
-            door.fillColor   = SKColor(red: 0.35, green: 0.22, blue: 0.12, alpha: 1)
-            door.strokeColor = .clear
-            door.position    = CGPoint(x: 0, y: -4)
-            base.addChild(door)
-            // Flag pole
-            let pole = SKShapeNode(rectOf: CGSize(width: 2, height: 18))
-            pole.fillColor   = SKColor(white: 0.7, alpha: 1)
-            pole.strokeColor = .clear
-            pole.position    = CGPoint(x: 8, y: 14)
-            base.addChild(pole)
-            // Pennant
-            let pennantPath = CGMutablePath()
-            pennantPath.move(to: CGPoint(x: 0, y: 6))
-            pennantPath.addLine(to: CGPoint(x: 8, y: 3))
-            pennantPath.addLine(to: CGPoint(x: 0, y: 0))
-            pennantPath.closeSubpath()
-            let pennant = SKShapeNode(path: pennantPath)
-            pennant.fillColor   = SKColor(red: 0.8, green: 0.15, blue: 0.15, alpha: 1)
-            pennant.strokeColor = .clear
-            pennant.position    = CGPoint(x: 9, y: 17)
-            base.addChild(pennant)
+            base.strokeColor = SKColor(red: 0.7, green: 0.45, blue: 0.2, alpha: 0.9)
+            base.lineWidth   = 2
+            // Anvil (dark gray trapezoid)
+            let anvilPath = CGMutablePath()
+            anvilPath.move(to: CGPoint(x: -6, y: -2))
+            anvilPath.addLine(to: CGPoint(x: 6, y: -2))
+            anvilPath.addLine(to: CGPoint(x: 8, y: 4))
+            anvilPath.addLine(to: CGPoint(x: -8, y: 4))
+            anvilPath.closeSubpath()
+            let anvil = SKShapeNode(path: anvilPath)
+            anvil.fillColor   = SKColor(red: 0.25, green: 0.25, blue: 0.25, alpha: 1)
+            anvil.strokeColor = .clear
+            anvil.position    = CGPoint(x: 0, y: -1)
+            base.addChild(anvil)
+            // Forge spark dots
+            for i in 0..<3 {
+                let spark = SKShapeNode(circleOfRadius: 1.5)
+                spark.fillColor   = SKColor(red: 1.0, green: 0.6, blue: 0.1, alpha: 0.9)
+                spark.strokeColor = .clear
+                spark.position    = CGPoint(x: CGFloat(i - 1) * 5, y: 5)
+                spark.run(.repeatForever(.sequence([
+                    .moveBy(x: 0, y: 5, duration: 0.4 + Double(i) * 0.15),
+                    .fadeOut(withDuration: 0.1),
+                    .move(to: CGPoint(x: CGFloat(i - 1) * 5, y: 5), duration: 0),
+                    .fadeIn(withDuration: 0.1)
+                ])))
+                base.addChild(spark)
+            }
             return base
 
         case .alchemist:

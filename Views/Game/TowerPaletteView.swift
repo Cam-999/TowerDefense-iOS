@@ -38,6 +38,8 @@ private struct TowerCell: View {
                 Text(type.displayName)
                     .font(.system(size: 10, weight: .bold))
                     .foregroundColor(.tdTextPrimary)
+                    .lineLimit(1)
+                    .minimumScaleFactor(0.75)
                 Text(type.subtitle)
                     .font(.system(size: 8))
                     .foregroundColor(type.isSupport ? type.iconColor : .tdTextSecondary)
@@ -45,7 +47,7 @@ private struct TowerCell: View {
 
             Text("\(gameState.effectiveCost(for: type))g")
                 .font(.system(size: 10, weight: .semibold))
-                .foregroundColor(gameState.canAfford(type) ? .tdAccentAmber : .tdDanger)
+                .foregroundColor(gameState.canAfford(type) ? .tdGold : .tdDanger)
         }
         .padding(.horizontal, 8)
         .padding(.vertical, 8)

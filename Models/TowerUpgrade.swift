@@ -35,11 +35,11 @@ enum TowerUpgrades {
                 TowerUpgrade(name: "Elemental Mastery", description: "+30% DMG, +20% Rate",  cost: 200, damageMult: 1.3,  fireRateMult: 0.8,  rangeMult: 1.0,  specialBonus: 0),
                 TowerUpgrade(name: "Archmage",         description: "+45% DMG, +15% Range",  cost: 350, damageMult: 1.45, fireRateMult: 1.0,  rangeMult: 1.15, specialBonus: 0),
             ]
-        case .barracks:
+        case .blacksmith:
             return [
-                TowerUpgrade(name: "Iron Armor",       description: "+20% DMG, +15% Rate",   cost: 90,  damageMult: 1.2,  fireRateMult: 0.85, rangeMult: 1.0,  specialBonus: 0),
-                TowerUpgrade(name: "Veteran Training", description: "+30% DMG, +10% Range",  cost: 170, damageMult: 1.3,  fireRateMult: 1.0,  rangeMult: 1.1,  specialBonus: 0),
-                TowerUpgrade(name: "Knights",          description: "+40% DMG, +20% Rate",   cost: 300, damageMult: 1.4,  fireRateMult: 0.8,  rangeMult: 1.0,  specialBonus: 0),
+                TowerUpgrade(name: "Tempered Steel",   description: "+10% Aura Range, +5% DMG Boost",  cost: 100, damageMult: 1.0, fireRateMult: 1.0, rangeMult: 1.10, specialBonus: 0.05),
+                TowerUpgrade(name: "Master Forge",     description: "+10% DMG Boost",                  cost: 190, damageMult: 1.0, fireRateMult: 1.0, rangeMult: 1.0,  specialBonus: 0.10),
+                TowerUpgrade(name: "Legendary Anvil",  description: "+15% Aura Range, +10% DMG Boost", cost: 320, damageMult: 1.0, fireRateMult: 1.0, rangeMult: 1.15, specialBonus: 0.10),
             ]
         case .alchemist:
             return [
