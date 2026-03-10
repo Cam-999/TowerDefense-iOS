@@ -18,6 +18,7 @@ final class GameState: ObservableObject {
     @Published var waveInProgress: Bool = false
     @Published var shieldsRemaining: Int = 0
     @Published var autoPlay: Bool = false
+    @Published var speedMultiplier: Double = 1.0
     @Published var selectedMap: MapType = .forest
 
     // MARK: - Cached upgrade effects (rebuilt when ownedUpgrades changes)
@@ -161,5 +162,6 @@ final class GameState: ObservableObject {
         waveInProgress = false
         shieldsRemaining = 0
         autoPlay = false
+        speedMultiplier = 1.0
     }
 }

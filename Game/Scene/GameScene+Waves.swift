@@ -3,6 +3,7 @@ import SpriteKit
 extension GameScene {
     func startWave(_ waveNumber: Int) {
         guard waveNumber >= 1, waveNumber <= 100 else { return }
+        guard let waveSystem else { return }
         let config = WaveData.all[waveNumber - 1]
         Task { @MainActor in
             gameState.wave = waveNumber

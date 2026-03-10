@@ -81,9 +81,9 @@ final class TowerNode: SKNode {
         rangeRing.isHidden = !show
     }
 
-    func canFire(at currentTime: TimeInterval) -> Bool {
+    func canFire(at currentTime: TimeInterval, speedMultiplier: Double = 1.0) -> Bool {
         guard !towerType.isSupport, !towerType.placesOnPath else { return false }
-        let rate = effectiveFireRate * TimeInterval(supportFireRateMult)
+        let rate = effectiveFireRate * TimeInterval(supportFireRateMult) / speedMultiplier
         return currentTime - lastFireTime >= rate
     }
 

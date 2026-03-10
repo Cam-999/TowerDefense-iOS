@@ -387,6 +387,8 @@ final class EnemyNode: SKNode {
             self.isDead = true
             self.removeFromParent()
             self.onReachEnd?(self)
+            self.onReachEnd = nil
+            self.onDeath = nil
         })
 
         run(.sequence(actions), withKey: "move")
@@ -446,6 +448,8 @@ final class EnemyNode: SKNode {
         removeAction(forKey: "regen")
         run(.sequence([.fadeAlpha(to: 0, duration: 0.12), .removeFromParent()]))
         onDeath?(self)
+        onDeath = nil
+        onReachEnd = nil
     }
 
     // MARK: - Slow

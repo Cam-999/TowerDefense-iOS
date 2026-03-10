@@ -6,6 +6,7 @@ final class PoisonZoneNode: SKNode {
     let tickInterval: TimeInterval = 0.5
     let totalDuration: TimeInterval = 4.0
     let radius: CGFloat
+    private let radiusSq: CGFloat
 
     private var elapsed: TimeInterval = 0
     private var tickTimer: TimeInterval = 0
@@ -14,6 +15,7 @@ final class PoisonZoneNode: SKNode {
     init(at point: CGPoint, damage: CGFloat, radius: CGFloat) {
         self.damagePerTick = damage
         self.radius = radius
+        self.radiusSq = radius * radius
         super.init()
         self.position = point
 
@@ -46,7 +48,7 @@ final class PoisonZoneNode: SKNode {
             // Damage all enemies inside radius
             for enemy in enemies {
                 guard !enemy.isDead, enemy.parent != nil else { continue }
-                if position.distance(to: enemy.position) <= radius {
+                if position.distanceSquared(to: enemy.position) <= radiusSq {
                     onHit(enemy, damagePerTick)
                     enemy.applyHitEffect(from: .alchemist)
                 }

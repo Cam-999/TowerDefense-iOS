@@ -81,19 +81,27 @@ final class ProjectileNode: SKNode {
         position = startPosition
         addChild(node)
 
-        let hitRadius: CGFloat = towerType == .catapult ? 7 : 5
-        physicsBody = SKPhysicsBody(circleOfRadius: hitRadius)
-        physicsBody?.categoryBitMask    = PhysicsCategories.projectile
-        physicsBody?.contactTestBitMask = PhysicsCategories.none
-        physicsBody?.collisionBitMask   = PhysicsCategories.none
-        physicsBody?.isDynamic          = true
-        physicsBody?.affectedByGravity  = false
-
         if towerType == .archer { trackingSpeed = 350 }
         if towerType == .ballista { trackingSpeed = 300 }
     }
 
     required init?(coder: NSCoder) { fatalError() }
+
+    func prepareForReuse(startPosition: CGPoint, target: EnemyNode) {
+        self.target = target
+        self.position = startPosition
+        self.piercesRemaining = 0
+        self.pierced.removeAll(keepingCapacity: true)
+        self.pierceDirection = .zero
+        self.isPiercing = false
+        self.onReachTarget = nil
+        self.onPierceHit = nil
+        self.alpha = 1
+        self.isHidden = false
+        if towerType == .archer { trackingSpeed = 350 }
+        else if towerType == .ballista { trackingSpeed = 300 }
+        else { trackingSpeed = 250 }
+    }
 
     func update(deltaTime: TimeInterval) {
         // Pierce mode — continue in straight line
@@ -104,6 +112,8 @@ final class ProjectileNode: SKNode {
 
         guard let target, !target.isDead, target.parent != nil else {
             onReachTarget?(position)
+            onReachTarget = nil
+            onPierceHit = nil
             return
         }
         let dest = target.position
@@ -116,10 +126,13 @@ final class ProjectileNode: SKNode {
             pierceDirection = diff.normalized()
             pierced.insert(ObjectIdentifier(target))
             onReachTarget?(dest)
+            onReachTarget = nil
             // If pierces remain, switch to pierce mode instead of removing
             if piercesRemaining > 0 {
                 isPiercing = true
                 position = dest
+            } else {
+                onPierceHit = nil
             }
         } else {
             let dir = diff.normalized()
@@ -138,7 +151,7 @@ final class ProjectileNode: SKNode {
 
     private func updatePierce(deltaTime: TimeInterval) {
         guard piercesRemaining > 0 else {
-            removeFromParent()
+            ProjectileSystem.release(self)
             return
         }
         let step = trackingSpeed * CGFloat(deltaTime)
@@ -146,28 +159,30 @@ final class ProjectileNode: SKNode {
 
         // Remove if off-screen
         guard let scene = self.scene else {
-            removeFromParent()
+            ProjectileSystem.release(self)
             return
         }
         if position.x < -20 || position.x > scene.size.width + 20 ||
            position.y < -20 || position.y > scene.size.height + 20 {
-            removeFromParent()
+            ProjectileSystem.release(self)
         }
     }
 
     /// Check if this piercing projectile hits an enemy (called from GameScene update)
     func checkPierceHit(against enemies: [EnemyNode], hitRadius: CGFloat = 15) {
         guard isPiercing, piercesRemaining > 0 else { return }
+        let hitRadiusSq = hitRadius * hitRadius
         for enemy in enemies {
             guard !enemy.isDead, enemy.parent != nil else { continue }
             let eid = ObjectIdentifier(enemy)
             guard !pierced.contains(eid) else { continue }
-            if position.distance(to: enemy.position) <= hitRadius {
+            if position.distanceSquared(to: enemy.position) <= hitRadiusSq {
                 pierced.insert(eid)
                 piercesRemaining -= 1
                 onPierceHit?(enemy, position)
                 if piercesRemaining <= 0 {
-                    removeFromParent()
+                    onPierceHit = nil
+                    ProjectileSystem.release(self)
                     return
                 }
             }

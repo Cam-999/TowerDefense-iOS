@@ -1,6 +1,24 @@
 import SpriteKit
 
 enum ProjectileSystem {
+    private static var pools: [TowerType: [ProjectileNode]] = [:]
+
+    static func acquire(towerType: TowerType, startPosition: CGPoint, target: EnemyNode) -> ProjectileNode {
+        if var pool = pools[towerType], let node = pool.popLast() {
+            pools[towerType] = pool
+            node.prepareForReuse(startPosition: startPosition, target: target)
+            return node
+        }
+        return ProjectileNode(towerType: towerType, startPosition: startPosition, target: target)
+    }
+
+    static func release(_ node: ProjectileNode) {
+        node.removeFromParent()
+        node.onReachTarget = nil
+        node.onPierceHit = nil
+        pools[node.towerType, default: []].append(node)
+    }
+
     /// Fire a projectile from `tower` toward `target`.
     /// Returns the projectile node added to `scene`.
     @discardableResult
@@ -12,7 +30,7 @@ enum ProjectileSystem {
         allEnemies: [EnemyNode],
         onHit: @escaping (EnemyNode, CGFloat) -> Void
     ) -> ProjectileNode {
-        let proj = ProjectileNode(towerType: tower.towerType, startPosition: tower.position, target: target)
+        let proj = acquire(towerType: tower.towerType, startPosition: tower.position, target: target)
         scene.addChild(proj)
 
         let baseDamage = tower.effectiveDamage
@@ -21,20 +39,28 @@ enum ProjectileSystem {
         let towerType      = tower.towerType
         let splashRadius   = towerType.splashRadius * CGFloat(gameState.splashMultiplier) * tower.upgradeSplashMult
 
-        proj.onReachTarget = { [weak scene] hitPoint in
-            guard let scene else { return }
+        // Pre-compute tower values to avoid capturing the TowerNode
+        let isArrowImmune = target.enemyType.arrowImmune
+        let targetMagicVuln = target.enemyType.magicVulnerability
+        let isSlowImmune = target.enemyType.slowImmune
+        let cryoFactor = gameState.cryoFactor
+        let cryoDuration = gameState.cryoDuration
+        let extraSlow = tower.extraSlowFactor
+
+        proj.onReachTarget = { [weak proj, weak target, weak scene] hitPoint in
+            guard let proj, let scene else { return }
 
             SoundSystem.shared.play(.hit)
 
             // Arrow immunity check — archer arrows bounce off arrow-immune enemies
-            if towerType == .archer && target.enemyType.arrowImmune {
+            if towerType == .archer && isArrowImmune {
                 showArrowBounce(at: hitPoint, in: scene)
-                proj.removeFromParent()
+                ProjectileSystem.release(proj)
                 return
             }
 
             // Magic vulnerability multiplier (wizard deals bonus damage to magic-vulnerable enemies)
-            let magicMult: CGFloat = towerType == .wizard ? target.enemyType.magicVulnerability : 1.0
+            let magicMult: CGFloat = towerType == .wizard ? targetMagicVuln : 1.0
             let adjustedDamage = finalDamage * magicMult
 
             // AoE splash (catapult, alchemist)
@@ -45,21 +71,21 @@ enum ProjectileSystem {
                     onHit(v, finalDamage * vMagicMult)
                     v.applyHitEffect(from: towerType)
                 }
-            } else {
+            } else if let target {
                 onHit(target, adjustedDamage)
                 target.applyHitEffect(from: towerType)
             }
 
             // Moat slow — uses tiered values + tower upgrade bonus
-            if towerType == .moat && !target.enemyType.slowImmune {
-                let slowFactor = max(0.1, gameState.cryoFactor - Double(tower.extraSlowFactor))
-                target.applySlowEffect(
+            if towerType == .moat && !isSlowImmune {
+                let slowFactor = max(0.1, cryoFactor - Double(extraSlow))
+                target?.applySlowEffect(
                     factor: CGFloat(slowFactor),
-                    duration: gameState.cryoDuration
+                    duration: cryoDuration
                 )
             }
 
-            proj.removeFromParent()
+            ProjectileSystem.release(proj)
         }
 
         return proj

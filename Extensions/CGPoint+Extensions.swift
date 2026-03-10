@@ -7,6 +7,12 @@ extension CGPoint {
         return sqrt(dx * dx + dy * dy)
     }
 
+    func distanceSquared(to other: CGPoint) -> CGFloat {
+        let dx = other.x - x
+        let dy = other.y - y
+        return dx * dx + dy * dy
+    }
+
     func angle(to other: CGPoint) -> CGFloat {
         atan2(other.y - y, other.x - x)
     }

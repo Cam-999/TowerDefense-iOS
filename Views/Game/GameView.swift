@@ -14,7 +14,9 @@ struct GameView: View {
             // Game map with HUD overlay
             ZStack(alignment: .top) {
                 if let holder = sceneHolder {
-                    SpriteView(scene: holder.scene)
+                    SpriteView(scene: holder.scene,
+                              options: [.shouldCullNonVisibleNodes],
+                              debugOptions: [.showsFPS, .showsNodeCount])
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 }
                 HUDView()
@@ -56,22 +58,47 @@ struct GameView: View {
                                     .background(gameState.autoPlay ? Color.tdAccentAmber.opacity(0.2) : Color.tdElevated)
                                     .cornerRadius(8)
                             }
+
+                            Button {
+                                gameState.speedMultiplier = gameState.speedMultiplier == 1.0 ? 2.0 : 1.0
+                            } label: {
+                                Text(gameState.speedMultiplier == 2.0 ? "2X" : "1X")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(gameState.speedMultiplier == 2.0 ? .tdAccentAmber : .tdTextSecondary)
+                                    .frame(width: 44, height: 44)
+                                    .background(gameState.speedMultiplier == 2.0 ? Color.tdAccentAmber.opacity(0.2) : Color.tdElevated)
+                                    .cornerRadius(8)
+                            }
                         }
                     } else if gameState.waveInProgress {
-                        Button {
-                            gameState.autoPlay.toggle()
-                        } label: {
-                            HStack(spacing: 4) {
-                                Image(systemName: gameState.autoPlay ? "forward.fill" : "forward")
-                                    .font(.system(size: 13, weight: .bold))
-                                Text(gameState.autoPlay ? "AUTO ON" : "AUTO OFF")
-                                    .font(.system(size: 12, weight: .bold))
+                        HStack(spacing: 8) {
+                            Button {
+                                gameState.autoPlay.toggle()
+                            } label: {
+                                HStack(spacing: 4) {
+                                    Image(systemName: gameState.autoPlay ? "forward.fill" : "forward")
+                                        .font(.system(size: 13, weight: .bold))
+                                    Text(gameState.autoPlay ? "AUTO ON" : "AUTO OFF")
+                                        .font(.system(size: 12, weight: .bold))
+                                }
+                                .foregroundColor(gameState.autoPlay ? .tdAccentAmber : .tdTextSecondary)
+                                .padding(.horizontal, 14)
+                                .padding(.vertical, 8)
+                                .background(gameState.autoPlay ? Color.tdAccentAmber.opacity(0.2) : Color.tdElevated)
+                                .cornerRadius(8)
                             }
-                            .foregroundColor(gameState.autoPlay ? .tdAccentAmber : .tdTextSecondary)
-                            .padding(.horizontal, 14)
-                            .padding(.vertical, 8)
-                            .background(gameState.autoPlay ? Color.tdAccentAmber.opacity(0.2) : Color.tdElevated)
-                            .cornerRadius(8)
+
+                            Button {
+                                gameState.speedMultiplier = gameState.speedMultiplier == 1.0 ? 2.0 : 1.0
+                            } label: {
+                                Text(gameState.speedMultiplier == 2.0 ? "2X" : "1X")
+                                    .font(.system(size: 14, weight: .bold))
+                                    .foregroundColor(gameState.speedMultiplier == 2.0 ? .tdAccentAmber : .tdTextSecondary)
+                                    .padding(.horizontal, 14)
+                                    .padding(.vertical, 8)
+                                    .background(gameState.speedMultiplier == 2.0 ? Color.tdAccentAmber.opacity(0.2) : Color.tdElevated)
+                                    .cornerRadius(8)
+                            }
                         }
                         .frame(minHeight: 44)
                     }
@@ -96,9 +123,14 @@ struct GameView: View {
                 .environmentObject(appState)
         }
         .onAppear {
-            if sceneHolder == nil {
-                sceneHolder = SceneHolder(gameState: gameState, appState: appState)
-            }
+            // Clean up old scene before creating a fresh one (handles new game after game over)
+            sceneHolder?.scene.cleanup()
+            sceneHolder = nil
+            sceneHolder = SceneHolder(gameState: gameState, appState: appState)
+        }
+        .onDisappear {
+            sceneHolder?.scene.cleanup()
+            sceneHolder = nil
         }
     }
 }

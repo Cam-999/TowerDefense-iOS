@@ -25,7 +25,10 @@ final class WaveSystem {
         for spawn in config.spawns {
             scene.run(.sequence([
                 .wait(forDuration: spawn.delay),
-                .run { [weak self] in self?.spawnEnemy(spawn, in: scene) }
+                .run { [weak self] in
+                    guard let self, let scene = self.scene else { return }
+                    self.spawnEnemy(spawn, in: scene)
+                }
             ]))
         }
     }

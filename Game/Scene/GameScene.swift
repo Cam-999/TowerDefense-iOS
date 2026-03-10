@@ -2,8 +2,8 @@ import SpriteKit
 
 final class GameScene: SKScene {
     // MARK: - State (set before didMove)
-    let gameState: GameState
-    let appState: AppState
+    unowned let gameState: GameState
+    unowned let appState: AppState
 
     // MARK: - Systems
     private(set) var waveSystem: WaveSystem!
@@ -23,6 +23,11 @@ final class GameScene: SKScene {
     var poisonZones: [PoisonZoneNode]       = []
 
     private var lastUpdateTime: TimeInterval?
+    private var moatTowerCache: [TowerNode] = []
+    private var moatTickCounter: Int = 0
+    private lazy var cullRect: CGRect = {
+        CGRect(origin: .zero, size: size).insetBy(dx: -40, dy: -40)
+    }()
     private var ghostContainer: SKNode?
     private var ghostBody: SKShapeNode?
     private var ghostRing: SKShapeNode?
@@ -39,6 +44,35 @@ final class GameScene: SKScene {
     }
 
     required init?(coder: NSCoder) { fatalError() }
+
+    deinit {
+        cleanup()
+    }
+
+    func cleanup() {
+        // Detach scene from SKView immediately to release SpriteView→SKScene connection
+        view?.presentScene(nil)
+        removeAllActions()
+        // Nil wave system callbacks to break cycles
+        waveSystem?.onWaveComplete = nil
+        waveSystem?.onEnemyReachedEnd = nil
+        // Nil closures on active projectiles
+        for proj in activeProjectiles {
+            proj.onReachTarget = nil
+            proj.onPierceHit = nil
+        }
+        // Nil closures on active enemies
+        for enemy in (waveSystem?.activeEnemies ?? []) {
+            enemy.onDeath = nil
+            enemy.onReachEnd = nil
+            enemy.removeAllActions()
+        }
+        activeProjectiles.removeAll()
+        poisonZones.removeAll()
+        placedTowers.removeAll()
+        removeAllChildren()
+        waveSystem = nil
+    }
 
     // MARK: - didMove
 
@@ -370,26 +404,50 @@ final class GameScene: SKScene {
             return
         } else if wasPaused {
             wasPaused = false
-            self.speed = 1
+            self.speed = CGFloat(gameState.speedMultiplier)
+        }
+
+        // Keep scene speed in sync with game state
+        let targetSpeed = CGFloat(gameState.speedMultiplier)
+        if !appState.isPaused && abs(self.speed - targetSpeed) > 0.01 {
+            self.speed = targetSpeed
         }
 
         let dt = currentTime - (lastUpdateTime ?? currentTime)
         lastUpdateTime = currentTime
 
-        // Move projectiles
-        for proj in activeProjectiles { proj.update(deltaTime: dt) }
+        let cullRect = self.cullRect
+
+        // Move projectiles & remove off-screen ones
+        for proj in activeProjectiles {
+            proj.update(deltaTime: dt)
+            if !cullRect.contains(proj.position) {
+                ProjectileSystem.release(proj)
+            }
+        }
         activeProjectiles.removeAll { $0.parent == nil }
 
         let enemies = waveSystem?.activeEnemies ?? []
+        guard !enemies.isEmpty || !poisonZones.isEmpty else {
+            // No enemies and no active zones — skip combat processing
+            if supportBuffsDirty {
+                recomputeSupportBuffs()
+                supportBuffsDirty = false
+            }
+            return
+        }
+
+        // Filter to only alive, on-screen enemies for combat checks
+        let aliveEnemies = enemies.filter { !$0.isDead && $0.parent != nil }
 
         // Check ballista pierce hits
         for proj in activeProjectiles where proj.towerType == .ballista && proj.piercesRemaining > 0 {
-            proj.checkPierceHit(against: enemies)
+            proj.checkPierceHit(against: aliveEnemies)
         }
 
         // Tick poison zones
         for zone in poisonZones where !zone.isExpired {
-            zone.update(deltaTime: dt, enemies: enemies) { [weak self] enemy, damage in
+            zone.update(deltaTime: dt, enemies: aliveEnemies) { [weak self] enemy, damage in
                 guard let self else { return }
                 enemy.takeDamage(damage, ignoresArmor: false)
                 if enemy.isDead {
@@ -408,26 +466,37 @@ final class GameScene: SKScene {
         }
 
         // Fire towers (skip moat — it's passive)
-        for tower in placedTowers {
-            guard !tower.towerType.placesOnPath else { continue }
-            guard tower.canFire(at: currentTime) else { continue }
-            if let target = TargetingSystem.target(for: tower, enemies: enemies, canTargetFlyingGlobal: gameState.hasUpgrade("s7")) {
-                tower.aimAt(target: target)
-                tower.didFire(at: currentTime)
-                fireProjectile(from: tower, at: target, enemies: enemies)
+        if !aliveEnemies.isEmpty {
+            let canTargetFlying = gameState.hasUpgrade("s7")
+            let speedMult = gameState.speedMultiplier
+            for tower in placedTowers {
+                guard !tower.towerType.placesOnPath else { continue }
+                guard tower.canFire(at: currentTime, speedMultiplier: speedMult) else { continue }
+                if let target = TargetingSystem.target(for: tower, enemies: aliveEnemies, canTargetFlyingGlobal: canTargetFlying) {
+                    tower.aimAt(target: target)
+                    tower.didFire(at: currentTime)
+                    fireProjectile(from: tower, at: target, enemies: aliveEnemies)
+                }
             }
         }
 
-        // Moat towers: slow enemies that walk over them
-        let cs = TowerPlacementSystem.cellSize
-        for tower in placedTowers where tower.towerType.placesOnPath {
-            for enemy in enemies {
-                guard !enemy.isDead, enemy.parent != nil else { continue }
-                guard !enemy.enemyType.slowImmune else { continue }
-                let dist = tower.position.distance(to: enemy.position)
-                if dist < cs * 0.6 {
-                    let factor = max(0.1, gameState.cryoFactor - Double(tower.extraSlowFactor))
-                    enemy.applySlowEffect(factor: CGFloat(factor), duration: CGFloat(gameState.cryoDuration))
+        // Moat towers: slow enemies that walk over them (throttled to every 3rd frame)
+        moatTickCounter += 1
+        if moatTickCounter >= 3 {
+            moatTickCounter = 0
+            let moatTowers = moatTowerCache
+            if !moatTowers.isEmpty && !aliveEnemies.isEmpty {
+                let cs = TowerPlacementSystem.cellSize
+                let moatRadiusSq = (cs * 0.6) * (cs * 0.6)
+                for tower in moatTowers {
+                    for enemy in aliveEnemies {
+                        guard !enemy.enemyType.slowImmune else { continue }
+                        let distSq = tower.position.distanceSquared(to: enemy.position)
+                        if distSq < moatRadiusSq {
+                            let factor = max(0.1, gameState.cryoFactor - Double(tower.extraSlowFactor))
+                            enemy.applySlowEffect(factor: CGFloat(factor), duration: CGFloat(gameState.cryoDuration))
+                        }
+                    }
                 }
             }
         }
@@ -436,6 +505,7 @@ final class GameScene: SKScene {
     var supportBuffsDirty = true
 
     private func recomputeSupportBuffs() {
+        moatTowerCache = placedTowers.filter { $0.towerType.placesOnPath }
         for tower in placedTowers {
             tower.supportDamageMult = 1.0
             tower.supportFireRateMult = 1.0
@@ -456,6 +526,12 @@ final class GameScene: SKScene {
 
         let ignoresArmor = tower.towerType.ignoresArmor || gameState.hasUpgrade("d5")
         let supportMult = tower.supportDamageMult
+        let towerType = tower.towerType
+        let towerDamage = tower.effectiveDamage
+        let splashMult = tower.upgradeSplashMult
+        let splashMultiplier = gameState.splashMultiplier
+        let towerSplashRadius = towerType.splashRadius
+
         let proj = ProjectileSystem.fire(
             from: tower,
             at: target,
@@ -477,9 +553,9 @@ final class GameScene: SKScene {
             }
 
             // Alchemist: spawn poison zone on hit
-            if tower.towerType == .alchemist {
-                let zoneDamage = tower.effectiveDamage * 0.3 * supportMult
-                let zoneRadius = tower.towerType.splashRadius * CGFloat(self.gameState.splashMultiplier) * tower.upgradeSplashMult
+            if towerType == .alchemist {
+                let zoneDamage = towerDamage * 0.3 * supportMult
+                let zoneRadius = towerSplashRadius * CGFloat(splashMultiplier) * splashMult
                 let zone = PoisonZoneNode(at: enemy.position, damage: zoneDamage, radius: max(zoneRadius, 25))
                 self.addChild(zone)
                 self.poisonZones.append(zone)
@@ -487,11 +563,11 @@ final class GameScene: SKScene {
         }
 
         // Ballista: set up pierce (3 base, can be upgraded)
-        if tower.towerType == .ballista {
+        if towerType == .ballista {
             proj.piercesRemaining = 3
+            let pierceDmg = towerDamage * supportMult * 0.7
             proj.onPierceHit = { [weak self] enemy, hitPoint in
-                guard let self else { return }
-                let pierceDmg = tower.effectiveDamage * supportMult * 0.7
+                guard self != nil else { return }
                 enemy.takeDamage(pierceDmg, ignoresArmor: ignoresArmor)
                 enemy.applyHitEffect(from: .ballista)
                 if enemy.isDead {
