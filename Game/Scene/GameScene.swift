@@ -136,9 +136,9 @@ final class GameScene: SKScene {
                     switch map {
                     case .forest:
                         patch.fillColor = SKColor(
-                            red: 0.18 + shade * 0.3,
-                            green: 0.36 + shade,
-                            blue: 0.10 + shade * 0.2, alpha: 1)
+                            red: 0.08 + shade * 0.2,
+                            green: 0.14 + shade * 0.6,
+                            blue: 0.06 + shade * 0.15, alpha: 1)
                     case .courtyard:
                         patch.fillColor = SKColor(
                             red: 0.42 + shade * 0.3,
@@ -162,44 +162,93 @@ final class GameScene: SKScene {
         // Map-specific decorations
         switch map {
         case .forest:
-            // Grass tufts
-            for _ in 0..<120 {
+            // Dark grass clusters
+            for _ in 0..<80 {
                 let x = CGFloat(rng.next() % UInt64(w - 10)) + 5
                 let row = Int(rng.next() % UInt64(GameScene.rows - 4))
                 let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
                 let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
                 if PathSystem.pathCells.contains(coord) { continue }
-                let tuft = grassTuft(rng: &rng)
+                let tuft = darkGrassTuft(rng: &rng)
                 tuft.position = CGPoint(x: x, y: y)
                 bgLayer.addChild(tuft)
             }
-            // Trees
-            let rEdge = w - 18
-            let mid = w / 2
-            let treeSpots: [(CGFloat, CGFloat)] = [
-                (18, 82), (rEdge, 82), (20, 250), (rEdge - 2, 250),
-                (18, 420), (rEdge, 560), (20, 640), (rEdge - 2, 640),
-                (18, 520), (rEdge, 380), (mid - 10, 650), (60, 650),
-                (rEdge - 60, 650), (rEdge, 170), (18, 170),
-            ]
-            for (tx, ty) in treeSpots {
+            // Dark trees — randomly placed, avoiding path by pixel distance
+            let maxTreeY = CGFloat(blockedMinRow) * cs - 40
+            let wps = PathSystem.waypoints
+            let minPathDist: CGFloat = 55  // min px from path centerline
+            let minTreeDist: CGFloat = 45  // min px between tree centers
+            var placedTreePts: [CGPoint] = []
+            let treeTarget = 25
+            for _ in 0..<120 {  // up to 120 candidates
+                if placedTreePts.count >= treeTarget { break }
+                let tx = CGFloat(rng.next() % UInt64(w - 30)) + 15
+                let ty = CGFloat(rng.next() % UInt64(max(Int(maxTreeY) - 20, 1))) + 10
                 let coord = GridCoord(col: Int(tx / cs), row: Int(ty / cs))
-                if PathSystem.pathCells.contains(coord) { continue }
                 if coord.row >= blockedMinRow { continue }
-                let tree = buildTree(rng: &rng)
-                tree.position = CGPoint(x: tx, y: ty)
+                // Check pixel distance to every path segment
+                let pt = CGPoint(x: tx, y: ty)
+                var tooClose = false
+                for i in 0..<(wps.count - 1) {
+                    let d = pt.distanceToSegment(a: wps[i], b: wps[i + 1])
+                    if d < minPathDist { tooClose = true; break }
+                }
+                if tooClose { continue }
+                // Check distance to already-placed trees
+                for prev in placedTreePts {
+                    let dx = pt.x - prev.x, dy = pt.y - prev.y
+                    if dx * dx + dy * dy < minTreeDist * minTreeDist {
+                        tooClose = true; break
+                    }
+                }
+                if tooClose { continue }
+                placedTreePts.append(pt)
+                let tree = buildDarkTree(rng: &rng)
+                let s = 1.3 + CGFloat(rng.next() % 50) / 100.0
+                tree.xScale = s
+                tree.yScale = s
+                tree.position = pt
                 bgLayer.addChild(tree)
             }
-            // Flowers
-            for _ in 0..<40 {
+            // Glowing mushrooms
+            for _ in 0..<25 {
                 let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
                 let row = Int(rng.next() % UInt64(GameScene.rows - 4))
                 let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
                 let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
                 if PathSystem.pathCells.contains(coord) { continue }
-                let flower = buildFlower(rng: &rng)
-                flower.position = CGPoint(x: x, y: y)
-                bgLayer.addChild(flower)
+                let mush = buildGlowingMushroom(rng: &rng)
+                mush.position = CGPoint(x: x, y: y)
+                bgLayer.addChild(mush)
+            }
+            // Dark ferns
+            for _ in 0..<30 {
+                let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
+                let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
+                let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
+                if PathSystem.pathCells.contains(coord) { continue }
+                let fern = buildDarkFern(rng: &rng)
+                fern.position = CGPoint(x: x, y: y)
+                bgLayer.addChild(fern)
+            }
+            // Fireflies
+            for _ in 0..<20 {
+                let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
+                let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
+                let fly = buildFirefly(rng: &rng)
+                fly.position = CGPoint(x: x, y: y)
+                bgLayer.addChild(fly)
+            }
+            // Fog patches
+            for _ in 0..<15 {
+                let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
+                let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
+                let fog = buildFogPatch(rng: &rng)
+                fog.position = CGPoint(x: x, y: y)
+                bgLayer.addChild(fog)
             }
 
         case .courtyard:
@@ -245,7 +294,7 @@ final class GameScene: SKScene {
                 let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
                 let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
                 if PathSystem.pathCells.contains(coord) { continue }
-                let rock = buildRock(rng: &rng)
+                let rock = buildRock(rng: &rng, mapType: map)
                 rock.xScale = 1.5
                 rock.yScale = 1.5
                 rock.position = CGPoint(x: x, y: y)
@@ -274,12 +323,22 @@ final class GameScene: SKScene {
             let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
             let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
             if PathSystem.pathCells.contains(coord) { continue }
-            let rock = buildRock(rng: &rng)
+            let rock = buildRock(rng: &rng, mapType: map)
             rock.position = CGPoint(x: x, y: y)
             bgLayer.addChild(rock)
         }
 
         addChild(bgLayer)
+
+        // Subtle dark overlay for forest atmosphere
+        if map == .forest {
+            let overlay = SKShapeNode(rectOf: size)
+            overlay.fillColor = SKColor(red: 0.0, green: 0.03, blue: 0.0, alpha: 0.08)
+            overlay.strokeColor = .clear
+            overlay.position = CGPoint(x: size.width / 2, y: size.height / 2)
+            overlay.zPosition = 5
+            addChild(overlay)
+        }
     }
 
     private func grassTuft(rng: inout BackgroundRNG) -> SKNode {
@@ -336,13 +395,18 @@ final class GameScene: SKScene {
         return node
     }
 
-    private func buildRock(rng: inout BackgroundRNG) -> SKNode {
+    private func buildRock(rng: inout BackgroundRNG, mapType: MapType = .forest) -> SKNode {
         let w = CGFloat(6 + Int(rng.next() % 6))
         let h = CGFloat(4 + Int(rng.next() % 4))
         let rock = SKShapeNode(rectOf: CGSize(width: w, height: h), cornerRadius: min(w, h) * 0.4)
         let shade = CGFloat(rng.next() % 15) / 100.0
-        rock.fillColor = SKColor(red: 0.45 + shade, green: 0.43 + shade, blue: 0.40 + shade, alpha: 0.8)
-        rock.strokeColor = SKColor(red: 0.35, green: 0.33, blue: 0.30, alpha: 0.4)
+        if mapType == .forest {
+            rock.fillColor = SKColor(red: 0.28 + shade, green: 0.25 + shade, blue: 0.22 + shade, alpha: 0.6)
+            rock.strokeColor = SKColor(red: 0.18, green: 0.16, blue: 0.14, alpha: 0.4)
+        } else {
+            rock.fillColor = SKColor(red: 0.45 + shade, green: 0.43 + shade, blue: 0.40 + shade, alpha: 0.8)
+            rock.strokeColor = SKColor(red: 0.35, green: 0.33, blue: 0.30, alpha: 0.4)
+        }
         rock.lineWidth = 0.5
         rock.zRotation = CGFloat(Int(rng.next() % 60)) / 100.0 - 0.3
         return rock
@@ -372,6 +436,223 @@ final class GameScene: SKScene {
         petal.position = CGPoint(x: 0, y: 6)
         node.addChild(petal)
         return node
+    }
+
+    // MARK: - Dark Forest Decorations
+
+    private func darkGrassTuft(rng: inout BackgroundRNG) -> SKNode {
+        let node = SKNode()
+        let count = 2 + Int(rng.next() % 3)
+        for i in 0..<count {
+            let h = CGFloat(7 + Int(rng.next() % 7))
+            let blade = SKShapeNode(rectOf: CGSize(width: 1.5, height: h))
+            let isDead = rng.next() % 100 < 30
+            if isDead {
+                blade.fillColor = SKColor(red: 0.18, green: 0.12, blue: 0.06, alpha: 0.55)
+            } else {
+                let v = CGFloat(rng.next() % 10) / 100.0
+                blade.fillColor = SKColor(red: 0.10, green: 0.22 + v, blue: 0.06, alpha: 0.65)
+            }
+            blade.strokeColor = .clear
+            blade.position = CGPoint(x: CGFloat(i) * 3 - 3, y: h / 2)
+            blade.zRotation = CGFloat(Int(rng.next() % 30)) / 100.0 - 0.15
+            node.addChild(blade)
+        }
+        return node
+    }
+
+    private func buildDarkTree(rng: inout BackgroundRNG) -> SKNode {
+        let node = SKNode()
+        // Main trunk — wider and taller
+        let trunkH: CGFloat = 14 + CGFloat(rng.next() % 8)
+        let trunk = SKShapeNode(rectOf: CGSize(width: 7, height: trunkH), cornerRadius: 1)
+        trunk.fillColor = SKColor(red: 0.20, green: 0.14, blue: 0.08, alpha: 1)
+        trunk.strokeColor = .clear
+        trunk.position = CGPoint(x: 0, y: trunkH / 2)
+        node.addChild(trunk)
+
+        // Second gnarled trunk piece
+        let trunk2 = SKShapeNode(rectOf: CGSize(width: 4, height: trunkH * 0.7), cornerRadius: 1)
+        trunk2.fillColor = SKColor(red: 0.16, green: 0.11, blue: 0.06, alpha: 0.8)
+        trunk2.strokeColor = .clear
+        trunk2.position = CGPoint(x: 3, y: trunkH * 0.3)
+        trunk2.zRotation = 0.15
+        node.addChild(trunk2)
+
+        // Main canopy
+        let canopyR: CGFloat = 14 + CGFloat(rng.next() % 6)
+        let canopyVar = CGFloat(rng.next() % 8) / 100.0
+        let canopy = SKShapeNode(circleOfRadius: canopyR)
+        canopy.fillColor = SKColor(
+            red: 0.08 + canopyVar,
+            green: 0.20 + canopyVar,
+            blue: 0.06,
+            alpha: 0.85
+        )
+        canopy.strokeColor = SKColor(red: 0.05, green: 0.14, blue: 0.04, alpha: 0.5)
+        canopy.lineWidth = 1
+        canopy.position = CGPoint(x: 0, y: trunkH + canopyR * 0.6)
+        node.addChild(canopy)
+
+        // Second overlapping canopy for depth
+        let canopy2R = canopyR * 0.75
+        let canopy2 = SKShapeNode(circleOfRadius: canopy2R)
+        canopy2.fillColor = SKColor(
+            red: 0.06 + canopyVar,
+            green: 0.16 + canopyVar,
+            blue: 0.04,
+            alpha: 0.7
+        )
+        canopy2.strokeColor = .clear
+        canopy2.position = CGPoint(x: canopyR * 0.3, y: -canopyR * 0.15)
+        canopy.addChild(canopy2)
+
+        // Subtle dark highlight (no bright highlight)
+        let highlight = SKShapeNode(circleOfRadius: canopyR * 0.3)
+        highlight.fillColor = SKColor(red: 0.10, green: 0.22, blue: 0.08, alpha: 0.3)
+        highlight.strokeColor = .clear
+        highlight.position = CGPoint(x: -canopyR * 0.2, y: canopyR * 0.2)
+        canopy.addChild(highlight)
+
+        // 50% chance of hanging roots/branches
+        if rng.next() % 2 == 0 {
+            let rootCount = 2 + Int(rng.next() % 2)
+            for r in 0..<rootCount {
+                let rootLen = CGFloat(8 + Int(rng.next() % 6))
+                let root = SKShapeNode(rectOf: CGSize(width: 1, height: rootLen))
+                root.fillColor = SKColor(red: 0.14, green: 0.10, blue: 0.06, alpha: 0.5)
+                root.strokeColor = .clear
+                let xOff = CGFloat(r) * 6 - 4
+                root.position = CGPoint(x: xOff, y: -canopyR - rootLen / 2 + 2)
+                canopy.addChild(root)
+            }
+        }
+
+        return node
+    }
+
+    private func buildGlowingMushroom(rng: inout BackgroundRNG) -> SKNode {
+        let node = SKNode()
+        // Stem
+        let stem = SKShapeNode(rectOf: CGSize(width: 1.5, height: 4))
+        stem.fillColor = SKColor(red: 0.15, green: 0.12, blue: 0.10, alpha: 0.8)
+        stem.strokeColor = .clear
+        stem.position = CGPoint(x: 0, y: 2)
+        node.addChild(stem)
+
+        // Cap
+        let isTeal = rng.next() % 100 < 60
+        let glowColor: SKColor
+        if isTeal {
+            glowColor = SKColor(red: 0.1, green: 0.7, blue: 0.5, alpha: 1)
+        } else {
+            glowColor = SKColor(red: 0.35, green: 0.2, blue: 0.8, alpha: 1)
+        }
+        let cap = SKShapeNode(circleOfRadius: 3)
+        cap.fillColor = glowColor
+        cap.strokeColor = .clear
+        cap.position = CGPoint(x: 0, y: 5.5)
+        node.addChild(cap)
+
+        // Glow halo behind cap
+        let halo = SKShapeNode(circleOfRadius: 6)
+        if isTeal {
+            halo.fillColor = SKColor(red: 0.1, green: 0.7, blue: 0.5, alpha: 0.15)
+        } else {
+            halo.fillColor = SKColor(red: 0.35, green: 0.2, blue: 0.8, alpha: 0.15)
+        }
+        halo.strokeColor = .clear
+        halo.position = CGPoint(x: 0, y: 5.5)
+        halo.zPosition = -0.1
+        node.addChild(halo)
+
+        // Pulse animation
+        let delay = Double(rng.next() % 200) / 100.0
+        let pulse = SKAction.sequence([
+            .wait(forDuration: delay),
+            .repeatForever(.sequence([
+                .fadeAlpha(to: 0.4, duration: 1.5),
+                .fadeAlpha(to: 0.8, duration: 1.5)
+            ]))
+        ])
+        node.run(pulse)
+
+        return node
+    }
+
+    private func buildDarkFern(rng: inout BackgroundRNG) -> SKNode {
+        let node = SKNode()
+        let bladeCount = 3 + Int(rng.next() % 3)
+        for i in 0..<bladeCount {
+            let h = CGFloat(8 + Int(rng.next() % 6))
+            let blade = SKShapeNode(rectOf: CGSize(width: 2, height: h))
+            let v = CGFloat(rng.next() % 10) / 100.0
+            blade.fillColor = SKColor(red: 0.10, green: 0.25 + v, blue: 0.06, alpha: 0.7)
+            blade.strokeColor = .clear
+            let spread = -0.4 + 0.8 * CGFloat(i) / CGFloat(max(bladeCount - 1, 1))
+            blade.position = CGPoint(x: 0, y: h / 2)
+            blade.zRotation = spread
+            node.addChild(blade)
+        }
+        return node
+    }
+
+    private func buildFirefly(rng: inout BackgroundRNG) -> SKNode {
+        let node = SKNode()
+        // Glow halo
+        let halo = SKShapeNode(circleOfRadius: 4)
+        halo.fillColor = SKColor(red: 0.5, green: 0.9, blue: 0.2, alpha: 0.12)
+        halo.strokeColor = .clear
+        node.addChild(halo)
+        // Dot
+        let dot = SKShapeNode(circleOfRadius: 1.5)
+        dot.fillColor = SKColor(red: 0.5, green: 0.9, blue: 0.2, alpha: 1)
+        dot.strokeColor = .clear
+        node.addChild(dot)
+        node.zPosition = 4
+
+        // Blink animation
+        let delay = Double(rng.next() % 400) / 100.0
+        let blink = SKAction.sequence([
+            .wait(forDuration: delay),
+            .repeatForever(.sequence([
+                .fadeAlpha(to: 0.0, duration: 2.0),
+                .fadeAlpha(to: 1.0, duration: 2.0)
+            ]))
+        ])
+        node.run(blink)
+
+        // Gentle drift
+        let dx = CGFloat(Int(rng.next() % 6)) - 3
+        let dy = CGFloat(Int(rng.next() % 6)) - 3
+        let drift = SKAction.repeatForever(.sequence([
+            .moveBy(x: dx, y: dy, duration: 3.0),
+            .moveBy(x: -dx, y: -dy, duration: 3.0)
+        ]))
+        node.run(drift)
+
+        return node
+    }
+
+    private func buildFogPatch(rng: inout BackgroundRNG) -> SKNode {
+        let fw = CGFloat(60 + Int(rng.next() % 40))
+        let fh = CGFloat(25 + Int(rng.next() % 15))
+        let fog = SKShapeNode(ellipseOf: CGSize(width: fw, height: fh))
+        fog.fillColor = SKColor(white: 0.5, alpha: 0.04)
+        fog.strokeColor = .clear
+        fog.zRotation = CGFloat(Int(rng.next() % 314)) / 100.0
+        fog.zPosition = 4
+
+        // 50% get slow horizontal drift
+        if rng.next() % 2 == 0 {
+            let drift = SKAction.repeatForever(.sequence([
+                .moveBy(x: 5, y: 0, duration: 8.0),
+                .moveBy(x: -5, y: 0, duration: 8.0)
+            ]))
+            fog.run(drift)
+        }
+
+        return fog
     }
 
     // MARK: - Grid

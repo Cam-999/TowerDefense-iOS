@@ -29,6 +29,17 @@ extension CGPoint {
         CGPoint(x: lhs.x * rhs, y: lhs.y * rhs)
     }
 
+    /// Shortest distance from this point to the line segment a→b.
+    func distanceToSegment(a: CGPoint, b: CGPoint) -> CGFloat {
+        let ab = CGPoint(x: b.x - a.x, y: b.y - a.y)
+        let ap = CGPoint(x: x - a.x, y: y - a.y)
+        let ab2 = ab.x * ab.x + ab.y * ab.y
+        guard ab2 > 0 else { return distance(to: a) }
+        let t = max(0, min(1, (ap.x * ab.x + ap.y * ab.y) / ab2))
+        let closest = CGPoint(x: a.x + ab.x * t, y: a.y + ab.y * t)
+        return distance(to: closest)
+    }
+
     var length: CGFloat { sqrt(x * x + y * y) }
 
     func normalized() -> CGPoint {

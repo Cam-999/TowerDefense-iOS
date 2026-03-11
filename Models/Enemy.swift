@@ -205,6 +205,25 @@ enum EnemyType: String, CaseIterable {
     }
 
     /// Distinctive color per enemy
+    var lore: String {
+        switch self {
+        case .goblin:        "A small but numerous pest. Weak alone, deadly in swarms."
+        case .orc:           "Heavily armored brute. Absorbs punishment and keeps marching."
+        case .darkKnight:    "Enchanted armor deflects arrows. Vulnerable to magic."
+        case .skeleton:      "Fast-moving bone warrior. Fragile but hard to catch."
+        case .troll:         "Regenerates health over time. Kill it fast or not at all."
+        case .bandit:        "Agile rogue that dodges attacks with uncanny reflexes."
+        case .necromancer:   "Dark mage that summons skeletons upon death."
+        case .skeletonSwarm: "Tiny bone fragments that split into goblins when destroyed."
+        case .siegeRam:      "Massive battering engine. Slow but extremely durable."
+        case .warlock:       "Protected by a magic shield. Regenerates health."
+        case .harpy:         "Flying creature that soars above ground defenses."
+        case .wraith:        "Ghostly specter. Phases through attacks and immune to slows."
+        case .necroKing:     "Lord of the undead. Summons dark knights on death."
+        case .dragonLord:    "Ancient wyrm of devastating power. The ultimate threat."
+        }
+    }
+
     var color: SKColor {
         switch self {
         case .goblin:        SKColor(red: 0.45, green: 0.65, blue: 0.20, alpha: 1) // sickly green

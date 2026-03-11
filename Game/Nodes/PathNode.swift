@@ -19,9 +19,9 @@ final class PathNode: SKNode {
 
         switch mapType {
         case .forest:
-            edgeColor  = .tdDirtDark
-            mainColor  = .tdPath
-            centerColor = .tdDirt
+            edgeColor  = SKColor(hex: 0x362A1E)
+            mainColor  = SKColor(hex: 0x4A3D2D)
+            centerColor = SKColor(hex: 0x584A38)
         case .courtyard:
             edgeColor  = SKColor(red: 0.35, green: 0.33, blue: 0.30, alpha: 1)
             mainColor  = SKColor(red: 0.55, green: 0.53, blue: 0.50, alpha: 1)
@@ -91,7 +91,7 @@ final class PathNode: SKNode {
                 if mapType == .mountain {
                     pebble.fillColor = SKColor(red: 0.40 + shade, green: 0.35 + shade, blue: 0.28, alpha: 0.35)
                 } else {
-                    pebble.fillColor = SKColor(red: 0.55 + shade, green: 0.42 + shade, blue: 0.18, alpha: 0.35)
+                    pebble.fillColor = SKColor(red: 0.18 + shade, green: 0.22 + shade, blue: 0.12, alpha: 0.25)
                 }
                 pebble.strokeColor = .clear
                 pebble.position = CGPoint(x: px, y: py)

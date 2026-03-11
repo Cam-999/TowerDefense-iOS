@@ -45,6 +45,15 @@ extension SKColor {
     static let tdTextPrimary   = SKColor(hex: 0xF5E6C8)
     static let tdTextSecondary = SKColor(hex: 0x9B8B6B)
 
+    // Dark Forest palette
+    static let dfGround     = SKColor(hex: 0x0A1208)
+    static let dfBark       = SKColor(hex: 0x1C1410)
+    static let dfCanopy     = SKColor(hex: 0x0B1F0A)
+    static let dfCanopyEdge = SKColor(hex: 0x061408)
+    static let dfPathEdge   = SKColor(hex: 0x2A2018)
+    static let dfPathMain   = SKColor(hex: 0x3D3225)
+    static let dfPathCenter = SKColor(hex: 0x4A3D2D)
+
     convenience init(hex: UInt32) {
         let r = CGFloat((hex >> 16) & 0xFF) / 255
         let g = CGFloat((hex >> 8)  & 0xFF) / 255

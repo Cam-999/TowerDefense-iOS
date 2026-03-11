@@ -2,6 +2,15 @@ import Foundation
 import Combine
 import SpriteKit
 
+struct EnemyStatsInfo: Identifiable {
+    let id = UUID()
+    let type: EnemyType
+    let currentHP: CGFloat
+    let maxHP: CGFloat
+    let remainingShield: CGFloat
+    let moveSpeed: CGFloat
+}
+
 @MainActor
 final class GameState: ObservableObject {
     @Published var wave: Int = 0
@@ -20,6 +29,7 @@ final class GameState: ObservableObject {
     @Published var autoPlay: Bool = false
     @Published var speedMultiplier: Double = 1.0
     @Published var selectedMap: MapType = .forest
+    @Published var selectedEnemy: EnemyStatsInfo? = nil
 
     // MARK: - Cached upgrade effects (rebuilt when ownedUpgrades changes)
 
@@ -163,5 +173,6 @@ final class GameState: ObservableObject {
         shieldsRemaining = 0
         autoPlay = false
         speedMultiplier = 1.0
+        selectedEnemy = nil
     }
 }
