@@ -6,7 +6,7 @@ struct TowerPaletteView: View {
     var body: some View {
         ScrollView(.horizontal, showsIndicators: false) {
             HStack(spacing: 6) {
-                ForEach(TowerType.allCases) { type in
+                ForEach(TowerType.allCases.filter { $0.map == gameState.selectedMap }) { type in
                     TowerCell(type: type, isSelected: gameState.selectedTowerType == type)
                         .onTapGesture {
                             gameState.selectedTowerType = type

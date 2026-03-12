@@ -17,15 +17,15 @@ struct MainMenuView: View {
                         .scaledToFit()
                         .frame(width: 80, height: 80)
 
-                    Text("KINGDOM")
+                    Text("DEFENSE")
                         .font(.system(size: 52, weight: .black, design: .serif))
                         .foregroundColor(.tdAccentAmber)
-                    Text("DEFENSE")
+                    Text("ODYSSEY")
                         .font(.system(size: 36, weight: .bold, design: .serif))
                         .foregroundColor(.tdTextPrimary)
                 }
 
-                Text("100 Waves. Defend the Realm.")
+                Text("100 Waves. Defend Every World.")
                     .font(.subheadline)
                     .foregroundColor(.tdTextSecondary)
 

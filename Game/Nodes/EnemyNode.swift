@@ -85,6 +85,8 @@ final class EnemyNode: SKNode {
         let r = size.width / 2
         switch type {
 
+        // ── Fantasy (original) ───────────────────────────────────────────
+
         // Bosses: rounded rectangles
         case .dragonLord:
             return SKShapeNode(rectOf: size, cornerRadius: 6)
@@ -131,7 +133,223 @@ final class EnemyNode: SKNode {
         case .wraith:
             return SKShapeNode(circleOfRadius: r)
 
-        // Default circle for goblin, skeletonSwarm
+        // ── Ocean ────────────────────────────────────────────────────────
+
+        // Basic
+        case .crab:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Armored
+        case .pirate:
+            return SKShapeNode(path: polygonPath(sides: 6, radius: r))
+
+        // Fast
+        case .jellyfish:
+            return SKShapeNode(path: starPath(points: 4, outerRadius: r, innerRadius: r * 0.45))
+
+        // Dodge
+        case .siren:
+            return SKShapeNode(path: diamondPath(radius: r))
+
+        // Regen
+        case .seaSerpent:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Summoner
+        case .anglerFish:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Swarm
+        case .sharkSwarm:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Heavy
+        case .turtleTank:
+            return SKShapeNode(rectOf: size, cornerRadius: 3)
+
+        // Shield
+        case .stormCaster:
+            return SKShapeNode(path: polygonPath(sides: 8, radius: r))
+
+        // Flying
+        case .flyingFish:
+            return SKShapeNode(path: polygonPath(sides: 3, radius: r))
+
+        // Elite
+        case .ghostShip:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Boss 1
+        case .tidalLord:
+            return SKShapeNode(rectOf: size, cornerRadius: 5)
+
+        // Boss 2
+        case .kraken:
+            return SKShapeNode(rectOf: size, cornerRadius: 6)
+
+        // ── Space ────────────────────────────────────────────────────────
+
+        // Basic
+        case .alienDrone:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Armored
+        case .mechSoldier:
+            return SKShapeNode(path: polygonPath(sides: 6, radius: r))
+
+        // Fast
+        case .speedster:
+            return SKShapeNode(path: starPath(points: 4, outerRadius: r, innerRadius: r * 0.45))
+
+        // Dodge
+        case .phaseShifter:
+            return SKShapeNode(path: diamondPath(radius: r))
+
+        // Regen
+        case .plasmaGolem:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Summoner
+        case .hiveMind:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Swarm
+        case .naniteSwarm:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Heavy
+        case .battleCruiser:
+            return SKShapeNode(rectOf: size, cornerRadius: 3)
+
+        // Shield
+        case .voidCaster:
+            return SKShapeNode(path: polygonPath(sides: 8, radius: r))
+
+        // Flying
+        case .starfighter:
+            return SKShapeNode(path: polygonPath(sides: 3, radius: r))
+
+        // Elite
+        case .darkMatter:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Boss 1
+        case .admiralZyx:
+            return SKShapeNode(rectOf: size, cornerRadius: 5)
+
+        // Boss 2
+        case .mothershipOmega:
+            return SKShapeNode(rectOf: size, cornerRadius: 6)
+
+        // ── Desert ──────────────────────────────────────────────────────
+
+        // Basic
+        case .scarab:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Armored
+        case .sandGolem:
+            return SKShapeNode(path: polygonPath(sides: 6, radius: r))
+
+        // Fast
+        case .dustDevil:
+            return SKShapeNode(path: starPath(points: 4, outerRadius: r, innerRadius: r * 0.45))
+
+        // Dodge
+        case .mirage:
+            return SKShapeNode(path: diamondPath(radius: r))
+
+        // Regen
+        case .sandWorm:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Summoner
+        case .mummy:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Swarm
+        case .scorpionPack:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Heavy
+        case .siegeElephant:
+            return SKShapeNode(rectOf: size, cornerRadius: 3)
+
+        // Shield
+        case .sandSorcerer:
+            return SKShapeNode(path: polygonPath(sides: 8, radius: r))
+
+        // Flying
+        case .desertHawk:
+            return SKShapeNode(path: polygonPath(sides: 3, radius: r))
+
+        // Elite
+        case .sphinxWraith:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Boss 1
+        case .pharaohKing:
+            return SKShapeNode(rectOf: size, cornerRadius: 5)
+
+        // Boss 2
+        case .ancientColossus:
+            return SKShapeNode(rectOf: size, cornerRadius: 6)
+
+        // ── Sky ──────────────────────────────────────────────────────────
+
+        // Basic
+        case .cloudWisp:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Armored
+        case .stormKnight:
+            return SKShapeNode(path: polygonPath(sides: 6, radius: r))
+
+        // Fast
+        case .windSprite:
+            return SKShapeNode(path: starPath(points: 4, outerRadius: r, innerRadius: r * 0.45))
+
+        // Dodge
+        case .fogPhantom:
+            return SKShapeNode(path: diamondPath(radius: r))
+
+        // Regen
+        case .thunderBeast:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Summoner
+        case .cloudWeaver:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Swarm
+        case .featherSwarm:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Heavy
+        case .skyFortress:
+            return SKShapeNode(rectOf: size, cornerRadius: 3)
+
+        // Shield
+        case .galeWizard:
+            return SKShapeNode(path: polygonPath(sides: 8, radius: r))
+
+        // Flying
+        case .stormEagle:
+            return SKShapeNode(path: polygonPath(sides: 3, radius: r))
+
+        // Elite
+        case .voidZephyr:
+            return SKShapeNode(circleOfRadius: r)
+
+        // Boss 1
+        case .skylordAres:
+            return SKShapeNode(rectOf: size, cornerRadius: 5)
+
+        // Boss 2
+        case .thunderDragon:
+            return SKShapeNode(rectOf: size, cornerRadius: 6)
+
+        // Default circle for goblin, skeletonSwarm, and any unlisted type
         default:
             return SKShapeNode(circleOfRadius: r)
         }
@@ -181,6 +399,8 @@ final class EnemyNode: SKNode {
     private func applyTypeVisuals() {
         switch enemyType {
 
+        // ── Fantasy (original) ───────────────────────────────────────────
+
         case .wraith:
             // Ghostly near-transparent white
             bodyNode.alpha       = 0.55
@@ -221,16 +441,7 @@ final class EnemyNode: SKNode {
             // Dark purple with skull cross overlay
             bodyNode.strokeColor = SKColor(red: 0.6, green: 0.2, blue: 0.8, alpha: 0.8)
             bodyNode.lineWidth   = 2
-            let crossSize: CGFloat = 6
-            let crossThick: CGFloat = 2.5
-            let vBar = SKShapeNode(rectOf: CGSize(width: crossThick, height: crossSize))
-            vBar.fillColor = SKColor(white: 0.85, alpha: 0.85)
-            vBar.strokeColor = .clear
-            let hBar = SKShapeNode(rectOf: CGSize(width: crossSize, height: crossThick))
-            hBar.fillColor = SKColor(white: 0.85, alpha: 0.85)
-            hBar.strokeColor = .clear
-            bodyNode.addChild(vBar)
-            bodyNode.addChild(hBar)
+            addCrossOverlay()
 
         case .siegeRam:
             // Dark wood with golden trim
@@ -241,18 +452,8 @@ final class EnemyNode: SKNode {
             // Flying — shadow underneath + bobbing animation
             bodyNode.strokeColor = SKColor(red: 0.7, green: 0.6, blue: 0.85, alpha: 0.8)
             bodyNode.lineWidth   = 1.5
-            // Shadow
-            let shadow = SKShapeNode(ellipseOf: CGSize(width: 16, height: 6))
-            shadow.fillColor   = SKColor(white: 0, alpha: 0.25)
-            shadow.strokeColor = .clear
-            shadow.position    = CGPoint(x: 0, y: -16)
-            shadow.zPosition   = -1
-            addChild(shadow)
-            // Bob animation
-            bodyNode.run(.repeatForever(.sequence([
-                .moveBy(x: 0, y: 4, duration: 0.5),
-                .moveBy(x: 0, y: -4, duration: 0.5)
-            ])))
+            addFlyingShadow()
+            addBobAnimation()
 
         case .dragonLord:
             // Blood red with bright red rim
@@ -277,9 +478,281 @@ final class EnemyNode: SKNode {
         case .skeletonSwarm:
             break // Tiny bone dot — no extra visuals
 
+        // ── Ocean ────────────────────────────────────────────────────────
+
+        // Armored: thick stroke matching ocean blue
+        case .pirate:
+            bodyNode.strokeColor = SKColor(red: 0.0, green: 0.35, blue: 0.65, alpha: 0.85)
+            bodyNode.lineWidth   = 2
+
+        // Regen: thick border
+        case .seaSerpent:
+            bodyNode.strokeColor = SKColor(red: 0.0, green: 0.50, blue: 0.55, alpha: 0.85)
+            bodyNode.lineWidth   = 2.5
+
+        // Summoner: cross overlay
+        case .anglerFish:
+            bodyNode.strokeColor = SKColor(red: 0.0, green: 0.30, blue: 0.50, alpha: 0.8)
+            bodyNode.lineWidth   = 2
+            addCrossOverlay()
+
+        // Shield: animated shield ring
+        case .stormCaster:
+            bodyNode.strokeColor = SKColor(red: 0.2, green: 0.5, blue: 0.9, alpha: 0.9)
+            bodyNode.lineWidth   = 2
+            addShieldRing(color: SKColor(red: 0.2, green: 0.5, blue: 0.9, alpha: 0.95))
+
+        // Flying: shadow + bob
+        case .flyingFish:
+            bodyNode.strokeColor = SKColor(red: 0.1, green: 0.6, blue: 0.85, alpha: 0.8)
+            bodyNode.lineWidth   = 1.5
+            addFlyingShadow()
+            addBobAnimation()
+
+        // Elite: ghostly alpha + glow stroke
+        case .ghostShip:
+            bodyNode.alpha       = 0.55
+            bodyNode.strokeColor = SKColor(white: 1, alpha: 0.6)
+            bodyNode.lineWidth   = 1.5
+
+        // Heavy: golden trim
+        case .turtleTank:
+            bodyNode.strokeColor = SKColor(red: 0.83, green: 0.63, blue: 0.09, alpha: 0.9)
+            bodyNode.lineWidth   = 2.5
+
+        // Dodge: subtle outline
+        case .siren:
+            bodyNode.strokeColor = SKColor(red: 0.4, green: 0.7, blue: 0.9, alpha: 0.7)
+            bodyNode.lineWidth   = 1.5
+
+        // Boss 1
+        case .tidalLord:
+            bodyNode.strokeColor = SKColor(red: 0.0, green: 0.55, blue: 1.0, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
+        // Boss 2
+        case .kraken:
+            bodyNode.strokeColor = SKColor(red: 0.0, green: 0.30, blue: 0.70, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
+        // ── Space ────────────────────────────────────────────────────────
+
+        // Armored: thick stroke matching space purple/grey
+        case .mechSoldier:
+            bodyNode.strokeColor = SKColor(red: 0.35, green: 0.35, blue: 0.55, alpha: 0.85)
+            bodyNode.lineWidth   = 2
+
+        // Regen: thick border
+        case .plasmaGolem:
+            bodyNode.strokeColor = SKColor(red: 0.4, green: 0.2, blue: 0.7, alpha: 0.85)
+            bodyNode.lineWidth   = 2.5
+
+        // Summoner: cross overlay
+        case .hiveMind:
+            bodyNode.strokeColor = SKColor(red: 0.3, green: 0.15, blue: 0.55, alpha: 0.8)
+            bodyNode.lineWidth   = 2
+            addCrossOverlay()
+
+        // Shield: animated shield ring
+        case .voidCaster:
+            bodyNode.strokeColor = SKColor(red: 0.5, green: 0.2, blue: 0.8, alpha: 0.9)
+            bodyNode.lineWidth   = 2
+            addShieldRing(color: SKColor(red: 0.5, green: 0.2, blue: 0.8, alpha: 0.95))
+
+        // Flying: shadow + bob
+        case .starfighter:
+            bodyNode.strokeColor = SKColor(red: 0.6, green: 0.6, blue: 0.9, alpha: 0.8)
+            bodyNode.lineWidth   = 1.5
+            addFlyingShadow()
+            addBobAnimation()
+
+        // Elite: ghostly alpha + glow stroke
+        case .darkMatter:
+            bodyNode.alpha       = 0.55
+            bodyNode.strokeColor = SKColor(white: 1, alpha: 0.6)
+            bodyNode.lineWidth   = 1.5
+
+        // Heavy: golden trim
+        case .battleCruiser:
+            bodyNode.strokeColor = SKColor(red: 0.83, green: 0.63, blue: 0.09, alpha: 0.9)
+            bodyNode.lineWidth   = 2.5
+
+        // Dodge: subtle outline
+        case .phaseShifter:
+            bodyNode.strokeColor = SKColor(red: 0.6, green: 0.5, blue: 0.9, alpha: 0.7)
+            bodyNode.lineWidth   = 1.5
+
+        // Boss 1
+        case .admiralZyx:
+            bodyNode.strokeColor = SKColor(red: 0.55, green: 0.25, blue: 1.0, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
+        // Boss 2
+        case .mothershipOmega:
+            bodyNode.strokeColor = SKColor(red: 0.35, green: 0.10, blue: 0.75, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
+        // ── Desert ──────────────────────────────────────────────────────
+
+        // Armored: thick stroke matching desert tan/brown
+        case .sandGolem:
+            bodyNode.strokeColor = SKColor(red: 0.55, green: 0.38, blue: 0.15, alpha: 0.85)
+            bodyNode.lineWidth   = 2
+
+        // Regen: thick border
+        case .sandWorm:
+            bodyNode.strokeColor = SKColor(red: 0.60, green: 0.42, blue: 0.10, alpha: 0.85)
+            bodyNode.lineWidth   = 2.5
+
+        // Summoner: cross overlay
+        case .mummy:
+            bodyNode.strokeColor = SKColor(red: 0.65, green: 0.55, blue: 0.35, alpha: 0.8)
+            bodyNode.lineWidth   = 2
+            addCrossOverlay()
+
+        // Shield: animated shield ring
+        case .sandSorcerer:
+            bodyNode.strokeColor = SKColor(red: 0.85, green: 0.65, blue: 0.20, alpha: 0.9)
+            bodyNode.lineWidth   = 2
+            addShieldRing(color: SKColor(red: 0.85, green: 0.65, blue: 0.20, alpha: 0.95))
+
+        // Flying: shadow + bob
+        case .desertHawk:
+            bodyNode.strokeColor = SKColor(red: 0.75, green: 0.55, blue: 0.25, alpha: 0.8)
+            bodyNode.lineWidth   = 1.5
+            addFlyingShadow()
+            addBobAnimation()
+
+        // Elite: ghostly alpha + glow stroke
+        case .sphinxWraith:
+            bodyNode.alpha       = 0.55
+            bodyNode.strokeColor = SKColor(white: 1, alpha: 0.6)
+            bodyNode.lineWidth   = 1.5
+
+        // Heavy: golden trim
+        case .siegeElephant:
+            bodyNode.strokeColor = SKColor(red: 0.83, green: 0.63, blue: 0.09, alpha: 0.9)
+            bodyNode.lineWidth   = 2.5
+
+        // Dodge: subtle outline
+        case .mirage:
+            bodyNode.strokeColor = SKColor(red: 0.85, green: 0.75, blue: 0.50, alpha: 0.7)
+            bodyNode.lineWidth   = 1.5
+
+        // Boss 1
+        case .pharaohKing:
+            bodyNode.strokeColor = SKColor(red: 0.90, green: 0.70, blue: 0.10, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
+        // Boss 2
+        case .ancientColossus:
+            bodyNode.strokeColor = SKColor(red: 0.70, green: 0.45, blue: 0.10, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
+        // ── Sky ──────────────────────────────────────────────────────────
+
+        // Armored: thick stroke matching sky blue/grey
+        case .stormKnight:
+            bodyNode.strokeColor = SKColor(red: 0.35, green: 0.50, blue: 0.65, alpha: 0.85)
+            bodyNode.lineWidth   = 2
+
+        // Regen: thick border
+        case .thunderBeast:
+            bodyNode.strokeColor = SKColor(red: 0.40, green: 0.55, blue: 0.20, alpha: 0.85)
+            bodyNode.lineWidth   = 2.5
+
+        // Summoner: cross overlay
+        case .cloudWeaver:
+            bodyNode.strokeColor = SKColor(red: 0.55, green: 0.70, blue: 0.85, alpha: 0.8)
+            bodyNode.lineWidth   = 2
+            addCrossOverlay()
+
+        // Shield: animated shield ring
+        case .galeWizard:
+            bodyNode.strokeColor = SKColor(red: 0.50, green: 0.75, blue: 0.95, alpha: 0.9)
+            bodyNode.lineWidth   = 2
+            addShieldRing(color: SKColor(red: 0.50, green: 0.75, blue: 0.95, alpha: 0.95))
+
+        // Flying: shadow + bob
+        case .stormEagle:
+            bodyNode.strokeColor = SKColor(red: 0.60, green: 0.65, blue: 0.80, alpha: 0.8)
+            bodyNode.lineWidth   = 1.5
+            addFlyingShadow()
+            addBobAnimation()
+
+        // Elite: ghostly alpha + glow stroke
+        case .voidZephyr:
+            bodyNode.alpha       = 0.55
+            bodyNode.strokeColor = SKColor(white: 1, alpha: 0.6)
+            bodyNode.lineWidth   = 1.5
+
+        // Heavy: golden trim
+        case .skyFortress:
+            bodyNode.strokeColor = SKColor(red: 0.83, green: 0.63, blue: 0.09, alpha: 0.9)
+            bodyNode.lineWidth   = 2.5
+
+        // Dodge: subtle outline
+        case .fogPhantom:
+            bodyNode.strokeColor = SKColor(red: 0.70, green: 0.75, blue: 0.85, alpha: 0.7)
+            bodyNode.lineWidth   = 1.5
+
+        // Boss 1
+        case .skylordAres:
+            bodyNode.strokeColor = SKColor(red: 0.30, green: 0.65, blue: 1.0, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
+        // Boss 2
+        case .thunderDragon:
+            bodyNode.strokeColor = SKColor(red: 0.55, green: 0.30, blue: 0.90, alpha: 0.9)
+            bodyNode.lineWidth   = 3
+
         default:
             break
         }
+    }
+
+    // MARK: - Visual helpers
+
+    private func addCrossOverlay() {
+        let crossSize: CGFloat = 6
+        let crossThick: CGFloat = 2.5
+        let vBar = SKShapeNode(rectOf: CGSize(width: crossThick, height: crossSize))
+        vBar.fillColor   = SKColor(white: 0.85, alpha: 0.85)
+        vBar.strokeColor = .clear
+        let hBar = SKShapeNode(rectOf: CGSize(width: crossSize, height: crossThick))
+        hBar.fillColor   = SKColor(white: 0.85, alpha: 0.85)
+        hBar.strokeColor = .clear
+        bodyNode.addChild(vBar)
+        bodyNode.addChild(hBar)
+    }
+
+    private func addShieldRing(color: SKColor) {
+        let shield = SKShapeNode(circleOfRadius: 15)
+        shield.fillColor   = color.withAlphaComponent(0.15)
+        shield.strokeColor = color
+        shield.lineWidth   = 2.5
+        shield.run(.repeatForever(.sequence([
+            .scale(to: 1.12, duration: 0.55),
+            .scale(to: 1.00, duration: 0.55)
+        ])))
+        addChild(shield)
+        shieldNode = shield
+    }
+
+    private func addFlyingShadow() {
+        let shadow = SKShapeNode(ellipseOf: CGSize(width: 16, height: 6))
+        shadow.fillColor   = SKColor(white: 0, alpha: 0.25)
+        shadow.strokeColor = .clear
+        shadow.position    = CGPoint(x: 0, y: -16)
+        shadow.zPosition   = -1
+        addChild(shadow)
+    }
+
+    private func addBobAnimation() {
+        bodyNode.run(.repeatForever(.sequence([
+            .moveBy(x: 0, y: 4, duration: 0.5),
+            .moveBy(x: 0, y: -4, duration: 0.5)
+        ])))
     }
 
     // MARK: - Sprite overlay
@@ -488,16 +961,18 @@ final class EnemyNode: SKNode {
         guard !isDead else { return }
         switch towerType {
 
-        case .archer:
-            // Quick yellow flash
+        // ── Yellow flash (archer-class) ───────────────────────────────────
+        case .archer,
+             .harpoonGun, .laserTurret, .spearThrower, .windCannon:
             bodyNode.run(.sequence([
                 .colorize(with: SKColor(red: 1.0, green: 0.85, blue: 0.3, alpha: 1),
                           colorBlendFactor: 0.6, duration: 0.03),
                 .colorize(withColorBlendFactor: 0, duration: 0.1)
             ]))
 
-        case .catapult:
-            // Orange flash + brief shake (impact)
+        // ── Orange flash + shake (catapult-class) ────────────────────────
+        case .catapult,
+             .depthCharge, .missilePod, .boulderSling, .thunderCloud:
             bodyNode.run(.sequence([
                 .colorize(with: SKColor(red: 1.0, green: 0.6, blue: 0.0, alpha: 1),
                           colorBlendFactor: 0.7, duration: 0.04),
@@ -511,8 +986,9 @@ final class EnemyNode: SKNode {
                 ])
             ]))
 
-        case .wizard:
-            // Purple magic flash + brief squish
+        // ── Purple flash + squish (wizard-class) ─────────────────────────
+        case .wizard,
+             .coralMage, .plasmaBeam, .sunMirror, .lightningRod:
             bodyNode.run(.sequence([
                 .colorize(with: SKColor(red: 0.6, green: 0.3, blue: 1.0, alpha: 1),
                           colorBlendFactor: 0.8, duration: 0.03),
@@ -525,11 +1001,15 @@ final class EnemyNode: SKNode {
                 ])
             ]))
 
-        case .blacksmith:
-            break  // support tower, doesn't attack
+        // ── Support towers — no hit effect ───────────────────────────────
+        case .blacksmith,
+             .pearlShrine, .shieldGen, .obelisk, .skyShrine,
+             .fogHorn, .commsArray, .warDrum, .windChime:
+            break
 
-        case .alchemist:
-            // Green poison flash + brief expand
+        // ── Green flash + expand (alchemist-class) ───────────────────────
+        case .alchemist,
+             .toxicReef, .acidSprayer, .venomPit, .stormBrew:
             bodyNode.run(.sequence([
                 .colorize(with: SKColor(red: 0.2, green: 0.9, blue: 0.3, alpha: 1),
                           colorBlendFactor: 0.7, duration: 0.04),
@@ -542,8 +1022,9 @@ final class EnemyNode: SKNode {
                 ])
             ]))
 
-        case .ballista:
-            // Sharp red impact flash + squish
+        // ── Red flash + squish (ballista-class) ──────────────────────────
+        case .ballista,
+             .tridentTower, .railgun, .scorpionBow, .galeForce:
             bodyNode.run(.sequence([
                 .colorize(with: SKColor(red: 1.0, green: 0.1, blue: 0.1, alpha: 1),
                           colorBlendFactor: 0.85, duration: 0.02),
@@ -556,8 +1037,9 @@ final class EnemyNode: SKNode {
                 ])
             ]))
 
-        case .moat:
-            // Blue water splash flash
+        // ── Blue flash (moat-class) ───────────────────────────────────────
+        case .moat,
+             .whirlpool, .gravityWell, .quicksand, .cloudTrap:
             bodyNode.run(.sequence([
                 .colorize(with: SKColor(red: 0.3, green: 0.7, blue: 1.0, alpha: 1),
                           colorBlendFactor: 0.6, duration: 0.04),

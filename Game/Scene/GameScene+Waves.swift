@@ -4,7 +4,8 @@ extension GameScene {
     func startWave(_ waveNumber: Int) {
         guard waveNumber >= 1, waveNumber <= 100 else { return }
         guard let waveSystem else { return }
-        let config = WaveData.all[waveNumber - 1]
+        let mapWaves = WaveData.waves(for: gameState.selectedMap)
+        let config = mapWaves[waveNumber - 1]
         Task { @MainActor in
             gameState.wave = waveNumber
             gameState.waveInProgress = true

@@ -9,9 +9,11 @@ enum PathSystem {
     /// Waypoints for the current map.
     static var waypoints: [CGPoint] {
         switch currentMap {
-        case .forest:    return forestWaypoints
-        case .courtyard: return courtyardWaypoints
-        case .mountain:  return mountainWaypoints
+        case .forest:  return forestWaypoints
+        case .ocean:   return oceanWaypoints
+        case .space:   return spaceWaypoints
+        case .desert:  return desertWaypoints
+        case .sky:     return skyWaypoints
         }
     }
 
@@ -66,47 +68,83 @@ enum PathSystem {
         ]
     }
 
-    // MARK: - Castle Courtyard
-    // Entry top-right → snake zigzag → exit bottom-right
+    // MARK: - Ocean (Sunken Depths)
+    // Entry bottom-left, snaking upward (like rising through water)
 
-    private static var courtyardWaypoints: [CGPoint] {
+    private static var oceanWaypoints: [CGPoint] {
         let cs = cs
         let w = TowerPlacementSystem.sceneWidth
         return [
-            CGPoint(x: w,                  y: 13 * cs + cs / 2),     // entry right, row 13
-            CGPoint(x: 6 * cs + cs / 2,    y: 13 * cs + cs / 2),     // left to col 6
-            CGPoint(x: 6 * cs + cs / 2,    y: 11 * cs + cs / 2),     // down to row 11
-            CGPoint(x: 2 * cs + cs / 2,    y: 11 * cs + cs / 2),     // left to col 2
-            CGPoint(x: 2 * cs + cs / 2,    y:  9 * cs + cs / 2),     // down to row 9
-            CGPoint(x: 7 * cs + cs / 2,    y:  9 * cs + cs / 2),     // right to col 7
-            CGPoint(x: 7 * cs + cs / 2,    y:  7 * cs + cs / 2),     // down to row 7
-            CGPoint(x: 1 * cs + cs / 2,    y:  7 * cs + cs / 2),     // left to col 1
-            CGPoint(x: 1 * cs + cs / 2,    y:  5 * cs + cs / 2),     // down to row 5
-            CGPoint(x: 6 * cs + cs / 2,    y:  5 * cs + cs / 2),     // right to col 6
-            CGPoint(x: 6 * cs + cs / 2,    y:  3 * cs + cs / 2),     // down to row 3
-            CGPoint(x: 3 * cs + cs / 2,    y:  3 * cs + cs / 2),     // left to col 3
-            CGPoint(x: 3 * cs + cs / 2,    y:  1 * cs + cs / 2),     // down to row 1
-            CGPoint(x: w,                  y:  1 * cs + cs / 2),     // exit right, row 1
+            CGPoint(x: 0,                 y:  1 * cs + cs / 2),     // entry left, row 1
+            CGPoint(x: 2 * cs + cs / 2,   y:  1 * cs + cs / 2),     // right to col 2
+            CGPoint(x: 2 * cs + cs / 2,   y:  4 * cs + cs / 2),     // up to row 4
+            CGPoint(x: 6 * cs + cs / 2,   y:  4 * cs + cs / 2),     // right to col 6
+            CGPoint(x: 6 * cs + cs / 2,   y:  7 * cs + cs / 2),     // up to row 7
+            CGPoint(x: 2 * cs + cs / 2,   y:  7 * cs + cs / 2),     // left to col 2
+            CGPoint(x: 2 * cs + cs / 2,   y: 10 * cs + cs / 2),     // up to row 10
+            CGPoint(x: 7 * cs + cs / 2,   y: 10 * cs + cs / 2),     // right to col 7
+            CGPoint(x: 7 * cs + cs / 2,   y: 13 * cs + cs / 2),     // up to row 13
+            CGPoint(x: w,                  y: 13 * cs + cs / 2),     // exit right, row 13
         ]
     }
 
-    // MARK: - Mountain Pass
-    // Entry left mid → narrow winding → exit right mid
+    // MARK: - Space (Cosmic Void)
+    // Entry top-left, spiraling inward then exiting right
 
-    private static var mountainWaypoints: [CGPoint] {
+    private static var spaceWaypoints: [CGPoint] {
+        let cs = cs
+        let w = TowerPlacementSystem.sceneWidth
+        return [
+            CGPoint(x: 0,                 y: 13 * cs + cs / 2),     // entry left, row 13
+            CGPoint(x: 7 * cs + cs / 2,   y: 13 * cs + cs / 2),     // right to col 7
+            CGPoint(x: 7 * cs + cs / 2,   y:  2 * cs + cs / 2),     // down to row 2
+            CGPoint(x: 2 * cs + cs / 2,   y:  2 * cs + cs / 2),     // left to col 2
+            CGPoint(x: 2 * cs + cs / 2,   y: 11 * cs + cs / 2),     // up to row 11
+            CGPoint(x: 5 * cs + cs / 2,   y: 11 * cs + cs / 2),     // right to col 5
+            CGPoint(x: 5 * cs + cs / 2,   y:  5 * cs + cs / 2),     // down to row 5
+            CGPoint(x: 4 * cs + cs / 2,   y:  5 * cs + cs / 2),     // left to col 4
+            CGPoint(x: 4 * cs + cs / 2,   y:  8 * cs + cs / 2),     // up to row 8
+            CGPoint(x: w,                  y:  8 * cs + cs / 2),     // exit right, row 8
+        ]
+    }
+
+    // MARK: - Desert (Scorching Sands)
+    // Entry left middle, long horizontal zigzags (wide desert feel)
+
+    private static var desertWaypoints: [CGPoint] {
         let cs = cs
         let w = TowerPlacementSystem.sceneWidth
         return [
             CGPoint(x: 0,                 y:  7 * cs + cs / 2),     // entry left, row 7
-            CGPoint(x: 2 * cs + cs / 2,   y:  7 * cs + cs / 2),     // col 2, row 7
-            CGPoint(x: 2 * cs + cs / 2,   y: 12 * cs + cs / 2),     // col 2, row 12
-            CGPoint(x: 5 * cs + cs / 2,   y: 12 * cs + cs / 2),     // col 5, row 12
-            CGPoint(x: 5 * cs + cs / 2,   y:  9 * cs + cs / 2),     // col 5, row 9
-            CGPoint(x: 3 * cs + cs / 2,   y:  9 * cs + cs / 2),     // col 3, row 9 (bridge)
-            CGPoint(x: 3 * cs + cs / 2,   y:  4 * cs + cs / 2),     // col 3, row 4
-            CGPoint(x: 6 * cs + cs / 2,   y:  4 * cs + cs / 2),     // col 6, row 4
-            CGPoint(x: 6 * cs + cs / 2,   y:  1 * cs + cs / 2),     // col 6, row 1
-            CGPoint(x: w,                  y:  1 * cs + cs / 2),     // exit right, row 1
+            CGPoint(x: 7 * cs + cs / 2,   y:  7 * cs + cs / 2),     // long right to col 7
+            CGPoint(x: 7 * cs + cs / 2,   y:  5 * cs + cs / 2),     // down to row 5
+            CGPoint(x: 1 * cs + cs / 2,   y:  5 * cs + cs / 2),     // long left to col 1
+            CGPoint(x: 1 * cs + cs / 2,   y:  3 * cs + cs / 2),     // down to row 3
+            CGPoint(x: 7 * cs + cs / 2,   y:  3 * cs + cs / 2),     // long right to col 7
+            CGPoint(x: 7 * cs + cs / 2,   y: 10 * cs + cs / 2),     // up to row 10
+            CGPoint(x: 1 * cs + cs / 2,   y: 10 * cs + cs / 2),     // long left to col 1
+            CGPoint(x: 1 * cs + cs / 2,   y: 12 * cs + cs / 2),     // up to row 12
+            CGPoint(x: w,                  y: 12 * cs + cs / 2),     // exit right, row 12
+        ]
+    }
+
+    // MARK: - Sky (Cloud Kingdom)
+    // Entry top-right, descending zigzag pattern
+
+    private static var skyWaypoints: [CGPoint] {
+        let cs = cs
+        let w = TowerPlacementSystem.sceneWidth
+        return [
+            CGPoint(x: w,                  y: 13 * cs + cs / 2),     // entry right, row 13
+            CGPoint(x: 2 * cs + cs / 2,    y: 13 * cs + cs / 2),     // left to col 2
+            CGPoint(x: 2 * cs + cs / 2,    y: 11 * cs + cs / 2),     // down to row 11
+            CGPoint(x: 6 * cs + cs / 2,    y: 11 * cs + cs / 2),     // right to col 6
+            CGPoint(x: 6 * cs + cs / 2,    y:  8 * cs + cs / 2),     // down to row 8
+            CGPoint(x: 1 * cs + cs / 2,    y:  8 * cs + cs / 2),     // left to col 1
+            CGPoint(x: 1 * cs + cs / 2,    y:  5 * cs + cs / 2),     // down to row 5
+            CGPoint(x: 7 * cs + cs / 2,    y:  5 * cs + cs / 2),     // right to col 7
+            CGPoint(x: 7 * cs + cs / 2,    y:  2 * cs + cs / 2),     // down to row 2
+            CGPoint(x: 0,                   y:  2 * cs + cs / 2),     // exit left, row 2
         ]
     }
 }

@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B1A2B3C400000001 /* background_music.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = B1A2B3C400000002 /* background_music.mp3 */; };
 		536F2CAC2F5A8D54005C7F86 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 536F2CAD2F5A8D54005C7F86 /* Assets.xcassets */; };
 		536F2C872F5A8D54005C7F86 /* AppState.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C772F5A8D54005C7F86 /* AppState.swift */; };
 		536F2C882F5A8D54005C7F86 /* MainMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 536F2C812F5A8D54005C7F86 /* MainMenuView.swift */; };
@@ -93,6 +94,7 @@
 		536F2CAA2F5A8D54005C7F86 /* SoundSystem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundSystem.swift; sourceTree = "<group>"; };
 		A1B2C3D400000002 /* PoisonZoneNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoisonZoneNode.swift; sourceTree = "<group>"; };
 		A1B2C3D400000004 /* MapDefinition.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapDefinition.swift; sourceTree = "<group>"; };
+		B1A2B3C400000002 /* background_music.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = background_music.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +112,7 @@
 			isa = PBXGroup;
 			children = (
 				536F2CAD2F5A8D54005C7F86 /* Assets.xcassets */,
+				B1A2B3C400000002 /* background_music.mp3 */,
 				536F2C582F5A8D54005C7F86 /* ContentView.swift */,
 				536F2C5C2F5A8D54005C7F86 /* Extensions */,
 				536F2C6F2F5A8D54005C7F86 /* Game */,
@@ -320,6 +323,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				536F2CAC2F5A8D54005C7F86 /* Assets.xcassets in Resources */,
+				B1A2B3C400000001 /* background_music.mp3 in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -507,8 +511,9 @@
 				DEVELOPMENT_TEAM = H33382Y5BN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Defense Odyssey";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				
+
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -518,7 +523,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TheBest.TowerDefense;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Defense Odyssey";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;
@@ -539,8 +544,9 @@
 				DEVELOPMENT_TEAM = H33382Y5BN;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
+				INFOPLIST_KEY_CFBundleDisplayName = "Defense Odyssey";
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
-				
+
 				INFOPLIST_KEY_UIStatusBarHidden = YES;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
@@ -550,7 +556,7 @@
 				);
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = TheBest.TowerDefense;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "Defense Odyssey";
 				STRING_CATALOG_GENERATE_SYMBOLS = YES;
 				SWIFT_APPROACHABLE_CONCURRENCY = YES;
 				SWIFT_DEFAULT_ACTOR_ISOLATION = MainActor;

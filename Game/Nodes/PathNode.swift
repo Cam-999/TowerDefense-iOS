@@ -22,14 +22,22 @@ final class PathNode: SKNode {
             edgeColor  = SKColor(hex: 0x362A1E)
             mainColor  = SKColor(hex: 0x4A3D2D)
             centerColor = SKColor(hex: 0x584A38)
-        case .courtyard:
-            edgeColor  = SKColor(red: 0.35, green: 0.33, blue: 0.30, alpha: 1)
-            mainColor  = SKColor(red: 0.55, green: 0.53, blue: 0.50, alpha: 1)
-            centerColor = SKColor(red: 0.62, green: 0.60, blue: 0.57, alpha: 1)
-        case .mountain:
-            edgeColor  = SKColor(red: 0.30, green: 0.25, blue: 0.20, alpha: 1)
-            mainColor  = SKColor(red: 0.45, green: 0.38, blue: 0.30, alpha: 1)
-            centerColor = SKColor(red: 0.52, green: 0.45, blue: 0.35, alpha: 1)
+        case .ocean:
+            edgeColor  = SKColor(red: 0.10, green: 0.20, blue: 0.35, alpha: 1)
+            mainColor  = SKColor(red: 0.15, green: 0.30, blue: 0.50, alpha: 1)
+            centerColor = SKColor(red: 0.20, green: 0.38, blue: 0.58, alpha: 1)
+        case .space:
+            edgeColor  = SKColor(red: 0.15, green: 0.12, blue: 0.22, alpha: 1)
+            mainColor  = SKColor(red: 0.25, green: 0.20, blue: 0.35, alpha: 1)
+            centerColor = SKColor(red: 0.32, green: 0.28, blue: 0.42, alpha: 1)
+        case .desert:
+            edgeColor  = SKColor(red: 0.45, green: 0.35, blue: 0.20, alpha: 1)
+            mainColor  = SKColor(red: 0.60, green: 0.48, blue: 0.28, alpha: 1)
+            centerColor = SKColor(red: 0.68, green: 0.55, blue: 0.35, alpha: 1)
+        case .sky:
+            edgeColor  = SKColor(red: 0.60, green: 0.65, blue: 0.75, alpha: 1)
+            mainColor  = SKColor(red: 0.72, green: 0.78, blue: 0.88, alpha: 1)
+            centerColor = SKColor(red: 0.82, green: 0.86, blue: 0.92, alpha: 1)
         }
 
         // Road edge (slightly wider, darker border)
@@ -59,12 +67,8 @@ final class PathNode: SKNode {
         center.zPosition   = 0
         addChild(center)
 
-        // Pebbles (forest/mountain) or tile lines (courtyard)
-        if mapType == .courtyard {
-            addTileLines(along: waypoints)
-        } else {
-            addPebbles(along: waypoints, mapType: mapType)
-        }
+        // Path decorations
+        addPebbles(along: waypoints, mapType: mapType)
     }
 
     private func addPebbles(along waypoints: [CGPoint], mapType: MapType) {
@@ -88,42 +92,22 @@ final class PathNode: SKNode {
                 let size = CGFloat(2 + Int(rng.next() % 3))
                 let pebble = SKShapeNode(circleOfRadius: size)
                 let shade = CGFloat(rng.next() % 10) / 100.0
-                if mapType == .mountain {
-                    pebble.fillColor = SKColor(red: 0.40 + shade, green: 0.35 + shade, blue: 0.28, alpha: 0.35)
-                } else {
+                switch mapType {
+                case .forest:
                     pebble.fillColor = SKColor(red: 0.18 + shade, green: 0.22 + shade, blue: 0.12, alpha: 0.25)
+                case .ocean:
+                    pebble.fillColor = SKColor(red: 0.10, green: 0.18 + shade, blue: 0.30 + shade, alpha: 0.25)
+                case .space:
+                    pebble.fillColor = SKColor(red: 0.20 + shade, green: 0.15 + shade, blue: 0.30, alpha: 0.2)
+                case .desert:
+                    pebble.fillColor = SKColor(red: 0.50 + shade, green: 0.40 + shade, blue: 0.25, alpha: 0.3)
+                case .sky:
+                    pebble.fillColor = SKColor(red: 0.70 + shade, green: 0.72 + shade, blue: 0.78, alpha: 0.2)
                 }
                 pebble.strokeColor = .clear
                 pebble.position = CGPoint(x: px, y: py)
                 pebble.zPosition = 0
                 addChild(pebble)
-            }
-        }
-    }
-
-    private func addTileLines(along waypoints: [CGPoint]) {
-        var rng = SeededRNG(seed: 42)
-        for i in 0..<(waypoints.count - 1) {
-            let a = waypoints[i], b = waypoints[i + 1]
-            let dist = a.distance(to: b)
-            let count = Int(dist / 30)
-            let dx = b.x - a.x, dy = b.y - a.y
-            let len = sqrt(dx * dx + dy * dy)
-            guard len > 0 else { continue }
-            let nx = -dy / len, ny = dx / len
-            for j in 0..<count {
-                let t = CGFloat(j) / CGFloat(max(count, 1))
-                let cx = a.x + (b.x - a.x) * t
-                let cy = a.y + (b.y - a.y) * t
-                let tilePath = CGMutablePath()
-                tilePath.move(to: CGPoint(x: cx + nx * 16, y: cy + ny * 16))
-                tilePath.addLine(to: CGPoint(x: cx - nx * 16, y: cy - ny * 16))
-                let tile = SKShapeNode(path: tilePath)
-                tile.strokeColor = SKColor(white: 0.45, alpha: 0.25)
-                tile.lineWidth = 1
-                tile.zPosition = 0
-                _ = rng.next() // consume for determinism
-                addChild(tile)
             }
         }
     }

@@ -20,12 +20,12 @@ struct TowerDefenseApp: App {
             case .active:
                 if appState.isPaused {
                     appState.isPaused = false
-                    SoundSystem.shared.resumeEngine()
+                    MusicPlayer.shared.resumeEngine()
                 }
             case .inactive, .background:
                 if appState.phase == .playing || appState.phase == .betweenWaves {
                     appState.isPaused = true
-                    SoundSystem.shared.pauseEngine()
+                    MusicPlayer.shared.pauseEngine()
                 }
             @unknown default:
                 break

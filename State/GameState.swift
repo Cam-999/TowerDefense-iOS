@@ -165,7 +165,7 @@ final class GameState: ObservableObject {
         gems = 0
         lives = 20
         score = 0
-        selectedTowerType = .archer
+        selectedTowerType = TowerType.allCases.first { $0.map == selectedMap }
         selectedPlacedTower = nil
         ownedUpgrades = []
         shopIsOpen = false

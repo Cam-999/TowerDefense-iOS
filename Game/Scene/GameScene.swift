@@ -105,6 +105,8 @@ final class GameScene: SKScene {
         waveSystem.onWaveComplete    = { [weak self] in self?.handleWaveComplete() }
         waveSystem.onEnemyReachedEnd = { [weak self] in self?.handleEnemyReachedEnd() }
 
+        MusicPlayer.shared.play(for: gameState.selectedMap)
+
     }
 
     // MARK: - Outdoor background
@@ -139,16 +141,26 @@ final class GameScene: SKScene {
                             red: 0.08 + shade * 0.2,
                             green: 0.14 + shade * 0.6,
                             blue: 0.06 + shade * 0.15, alpha: 1)
-                    case .courtyard:
+                    case .ocean:
                         patch.fillColor = SKColor(
-                            red: 0.42 + shade * 0.3,
-                            green: 0.40 + shade * 0.3,
-                            blue: 0.36 + shade * 0.3, alpha: 1)
-                    case .mountain:
+                            red: 0.05 + shade * 0.1,
+                            green: 0.10 + shade * 0.2,
+                            blue: 0.25 + shade * 0.4, alpha: 1)
+                    case .space:
                         patch.fillColor = SKColor(
-                            red: 0.35 + shade * 0.3,
-                            green: 0.32 + shade * 0.2,
-                            blue: 0.28 + shade * 0.2, alpha: 1)
+                            red: 0.04 + shade * 0.08,
+                            green: 0.03 + shade * 0.06,
+                            blue: 0.08 + shade * 0.15, alpha: 1)
+                    case .desert:
+                        patch.fillColor = SKColor(
+                            red: 0.55 + shade * 0.3,
+                            green: 0.42 + shade * 0.25,
+                            blue: 0.22 + shade * 0.15, alpha: 1)
+                    case .sky:
+                        patch.fillColor = SKColor(
+                            red: 0.55 + shade * 0.2,
+                            green: 0.65 + shade * 0.2,
+                            blue: 0.82 + shade * 0.1, alpha: 1)
                     }
                 }
                 patch.strokeColor = .clear
@@ -251,68 +263,104 @@ final class GameScene: SKScene {
                 bgLayer.addChild(fog)
             }
 
-        case .courtyard:
-            // Stone wall sections along edges
-            for row in stride(from: 0, to: GameScene.rows - 4, by: 3) {
-                for col in [0, GameScene.cols - 1] {
-                    let coord = GridCoord(col: col, row: row)
-                    if PathSystem.pathCells.contains(coord) { continue }
-                    let cx = CGFloat(col) * cs + cs / 2
-                    let cy = CGFloat(row) * cs + cs / 2
-                    let wall = SKShapeNode(rectOf: CGSize(width: cs - 2, height: cs * 2), cornerRadius: 3)
-                    wall.fillColor = SKColor(red: 0.50, green: 0.48, blue: 0.44, alpha: 0.7)
-                    wall.strokeColor = SKColor(red: 0.40, green: 0.38, blue: 0.34, alpha: 0.5)
-                    wall.lineWidth = 1
-                    wall.position = CGPoint(x: cx, y: cy)
-                    bgLayer.addChild(wall)
-                }
-            }
-            // Torch sconces with flicker
-            for row in stride(from: 2, to: GameScene.rows - 4, by: 4) {
-                for col in [1, GameScene.cols - 2] {
-                    let coord = GridCoord(col: col, row: row)
-                    if PathSystem.pathCells.contains(coord) { continue }
-                    let cx = CGFloat(col) * cs + cs / 2
-                    let cy = CGFloat(row) * cs + cs / 2
-                    let torch = SKShapeNode(circleOfRadius: 4)
-                    torch.fillColor = SKColor(red: 1.0, green: 0.7, blue: 0.2, alpha: 0.8)
-                    torch.strokeColor = .clear
-                    torch.position = CGPoint(x: cx, y: cy)
-                    torch.run(.repeatForever(.sequence([
-                        .fadeAlpha(to: 0.5, duration: 0.3),
-                        .fadeAlpha(to: 1.0, duration: 0.3)
-                    ])))
-                    bgLayer.addChild(torch)
-                }
-            }
-
-        case .mountain:
-            // Boulders
-            for _ in 0..<35 {
+        case .ocean:
+            // Seaweed clusters
+            for _ in 0..<40 {
                 let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
                 let row = Int(rng.next() % UInt64(GameScene.rows - 4))
                 let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
                 let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
                 if PathSystem.pathCells.contains(coord) { continue }
-                let rock = buildRock(rng: &rng, mapType: map)
-                rock.xScale = 1.5
-                rock.yScale = 1.5
-                rock.position = CGPoint(x: x, y: y)
-                bgLayer.addChild(rock)
+                let weed = SKShapeNode(rectOf: CGSize(width: 2, height: CGFloat(8 + Int(rng.next() % 8))))
+                weed.fillColor = SKColor(red: 0.1, green: 0.35 + CGFloat(rng.next() % 15) / 100, blue: 0.2, alpha: 0.7)
+                weed.strokeColor = .clear
+                weed.position = CGPoint(x: x, y: y)
+                weed.run(.repeatForever(.sequence([
+                    .rotate(byAngle: 0.1, duration: 1.0),
+                    .rotate(byAngle: -0.1, duration: 1.0)
+                ])))
+                bgLayer.addChild(weed)
             }
-            // Snow patches at top
-            for _ in 0..<20 {
+            // Bubble particles
+            for _ in 0..<15 {
                 let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
-                let row = Int(rng.next() % UInt64(4)) + GameScene.rows - 8
-                if row >= blockedMinRow { continue }
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
+                let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
+                let bubble = SKShapeNode(circleOfRadius: CGFloat(2 + Int(rng.next() % 3)))
+                bubble.fillColor = SKColor(red: 0.4, green: 0.7, blue: 0.9, alpha: 0.3)
+                bubble.strokeColor = .clear
+                bubble.position = CGPoint(x: x, y: y)
+                bubble.run(.repeatForever(.sequence([
+                    .moveBy(x: 0, y: 20, duration: 2.0),
+                    .fadeOut(withDuration: 0.2),
+                    .move(to: CGPoint(x: x, y: y), duration: 0),
+                    .fadeIn(withDuration: 0.2)
+                ])))
+                bgLayer.addChild(bubble)
+            }
+
+        case .space:
+            // Stars
+            for _ in 0..<60 {
+                let x = CGFloat(rng.next() % UInt64(w - 10)) + 5
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
+                let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
+                let star = SKShapeNode(circleOfRadius: CGFloat(1 + Int(rng.next() % 2)))
+                star.fillColor = SKColor(white: 0.8 + CGFloat(rng.next() % 20) / 100, alpha: 0.6)
+                star.strokeColor = .clear
+                star.position = CGPoint(x: x, y: y)
+                star.run(.repeatForever(.sequence([
+                    .fadeAlpha(to: 0.2, duration: 0.5 + Double(rng.next() % 10) / 10.0),
+                    .fadeAlpha(to: 0.8, duration: 0.5 + Double(rng.next() % 10) / 10.0)
+                ])))
+                bgLayer.addChild(star)
+            }
+
+        case .desert:
+            // Cacti
+            for _ in 0..<15 {
+                let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
                 let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
                 let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
                 if PathSystem.pathCells.contains(coord) { continue }
-                let snow = SKShapeNode(circleOfRadius: CGFloat(4 + Int(rng.next() % 5)))
-                snow.fillColor = SKColor(white: 0.92, alpha: 0.3)
-                snow.strokeColor = .clear
-                snow.position = CGPoint(x: x, y: y)
-                bgLayer.addChild(snow)
+                let cactus = SKShapeNode(rectOf: CGSize(width: 4, height: CGFloat(12 + Int(rng.next() % 8))), cornerRadius: 2)
+                cactus.fillColor = SKColor(red: 0.2, green: 0.45, blue: 0.15, alpha: 0.8)
+                cactus.strokeColor = .clear
+                cactus.position = CGPoint(x: x, y: y)
+                bgLayer.addChild(cactus)
+            }
+            // Sand drifts
+            for _ in 0..<25 {
+                let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
+                let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
+                let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
+                if PathSystem.pathCells.contains(coord) { continue }
+                let drift = SKShapeNode(ellipseOf: CGSize(width: CGFloat(15 + Int(rng.next() % 10)), height: 4))
+                drift.fillColor = SKColor(red: 0.65, green: 0.52, blue: 0.30, alpha: 0.4)
+                drift.strokeColor = .clear
+                drift.position = CGPoint(x: x, y: y)
+                bgLayer.addChild(drift)
+            }
+
+        case .sky:
+            // Cloud puffs
+            for _ in 0..<30 {
+                let x = CGFloat(rng.next() % UInt64(w - 20)) + 10
+                let row = Int(rng.next() % UInt64(GameScene.rows - 4))
+                let y = CGFloat(row) * cs + CGFloat(rng.next() % UInt64(cs))
+                let coord = GridCoord(col: Int(x / cs), row: Int(y / cs))
+                if PathSystem.pathCells.contains(coord) { continue }
+                let cloud = SKShapeNode(ellipseOf: CGSize(width: CGFloat(20 + Int(rng.next() % 15)), height: CGFloat(8 + Int(rng.next() % 5))))
+                cloud.fillColor = SKColor(white: 1.0, alpha: 0.15)
+                cloud.strokeColor = .clear
+                cloud.position = CGPoint(x: x, y: y)
+                cloud.run(.repeatForever(.sequence([
+                    .moveBy(x: 5, y: 0, duration: 3.0),
+                    .moveBy(x: -5, y: 0, duration: 3.0)
+                ])))
+                bgLayer.addChild(cloud)
             }
         }
 
